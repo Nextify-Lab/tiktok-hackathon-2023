@@ -37,8 +37,7 @@
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "no-console": ["error", { "allow": ["error", "warn", "dir"] }],
     "linebreak-style": 0,
-    "camelcase":0,
-
+    "camelcase":0
   },
   "overrides": [
     {
