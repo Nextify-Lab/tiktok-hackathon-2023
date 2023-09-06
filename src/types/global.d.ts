@@ -1,0 +1,3 @@
+interface SampleType {
+  sample: string;
+}
