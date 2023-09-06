@@ -1,0 +1,41 @@
+.topNavbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+}
+
+.topNavbar h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  padding: 0 40px;
+}
+
+.topNavbar h2 span {
+  font-weight: 700;
+  position: relative;
+}
+
+.topNavbar h2 span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 50%;
+  height: 1px;
+  background-color: #fff;
+  transform: translateX(50%);
+}
+
+.icon {
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}

@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+html {
+  scroll-snap-type: y mandatory;
+  font-family: "Montserrat", sans-serif;
+  background-color: #000;
+}
