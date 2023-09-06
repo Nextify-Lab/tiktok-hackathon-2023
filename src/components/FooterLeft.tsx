@@ -3,9 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import styles from "./FooterLeft.module.css";
 
-export default function FooterLeft(props) {
-  const { username, description, song } = props;
+interface FooterLeftProps {
+  username: string;
+  description: string;
+  song: string;
+}
 
+const FooterLeft: React.FC<FooterLeftProps> = ({
+  username,
+  description,
+  song,
+}) => {
   return (
     <div className={styles.footerContainer}>
       <div className={styles.footerLeft}>
@@ -14,19 +22,16 @@ export default function FooterLeft(props) {
           <p>{description}</p>
           <div className={styles.ticker}>
             <FontAwesomeIcon icon={faMusic} style={{ width: "30px" }} />
-            {/* eslint-disable-next-line jsx-a11y/no-distracting-elements */}
-            {/* <marquee direction="left" scrollamount="20">
-              <span>{song}</span>
-            </marquee> */}
             <div className={styles.scrollingTextContainer}>
-
-            <div className={styles.scrollingText}>
-              <span>{song}</span>
-            </div>
+              <div className={styles.scrollingText}>
+                <span>{song}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default FooterLeft;

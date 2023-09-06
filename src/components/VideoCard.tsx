@@ -3,51 +3,53 @@ import FooterLeft from "../components/FooterLeft";
 import FooterRight from "../components/FooterRight";
 import styles from "./VideoCard.module.css";
 
-const VideoCard = (props: {
-  url: any;
-  username: any;
-  description: any;
-  song: any;
-  likes: any;
-  shares: any;
-  comments: any;
-  saves: any;
-  profilePic: any;
-  setVideoRef: any;
-  autoplay: any;
+interface VideoCardProps {
+  url: string;
+  username: string;
+  description: string;
+  song: string;
+  likes: number | string; // assuming likes can be a number or a formatted string
+  shares: number;
+  comments: number;
+  saves: number;
+  profilePic: string;
+  setVideoRef: (video: HTMLVideoElement | null) => void;
+  autoplay: boolean;
+}
+
+const VideoCard: React.FC<VideoCardProps> = ({
+  url,
+  username,
+  description,
+  song,
+  likes,
+  shares,
+  comments,
+  saves,
+  profilePic,
+  setVideoRef,
+  autoplay,
 }) => {
-  const {
-    url,
-    username,
-    description,
-    song,
-    likes,
-    shares,
-    comments,
-    saves,
-    profilePic,
-    setVideoRef,
-    autoplay,
-  } = props;
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    if (autoplay) {
+    if (autoplay && videoRef.current) {
       videoRef.current.play();
     }
   }, [autoplay]);
 
   const onVideoPress = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
     }
   };
 
   return (
     <div className={styles.video}>
-      {/* The video element */}
       <video
         className={styles.player}
         onClick={onVideoPress}
@@ -60,7 +62,6 @@ const VideoCard = (props: {
       ></video>
       <div className={styles["bottom-controls"]}>
         <div className={styles["footer-left"]}>
-          {/* The left part of the container */}
           <FooterLeft
             username={username}
             description={description}
@@ -68,7 +69,6 @@ const VideoCard = (props: {
           />
         </div>
         <div className={styles["footer-right"]}>
-          {/* The right part of the container */}
           <FooterRight
             likes={likes}
             shares={shares}

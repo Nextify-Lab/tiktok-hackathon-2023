@@ -10,10 +10,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./FooterRight.module.css";
 
-function FooterRight({ likes, comments, saves, shares, profilePic }) {
+interface FooterRightProps {
+  likes: string | number;
+  comments: string | number; // If your comments are always numbers, just use 'number' as the type.
+  saves: number;
+  shares: number;
+  profilePic?: string; // '?' indicates it's optional
+}
+
+function FooterRight({
+  likes,
+  comments,
+  saves,
+  shares,
+  profilePic,
+}: FooterRightProps) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [userAddIcon, setUserAddIcon] = useState(faCirclePlus);
+  const [userAddIcon, setUserAddIcon] = useState<
+    typeof faCirclePlus | typeof faCircleCheck | null
+  >(faCirclePlus);
 
   const handleUserAddClick = () => {
     setUserAddIcon(faCircleCheck);
@@ -23,7 +39,7 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
   };
 
   // Function to convert likes count to a number
-  const parseLikesCount = (count) => {
+  const parseLikesCount = (count: string | number) => {
     if (typeof count === "string") {
       if (count.endsWith("K")) {
         return parseFloat(count) * 1000;
@@ -34,7 +50,7 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
   };
 
   // Function to format likes count
-  const formatLikesCount = (count) => {
+  const formatLikesCount = (count: number) => {
     if (count >= 10000) {
       return (count / 1000).toFixed(1) + "K";
     }
@@ -56,12 +72,14 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
             style={{ width: "45px", height: "45px", color: "#616161" }}
           />
         ) : null}
-        <FontAwesomeIcon
-          icon={userAddIcon}
-          className={styles.userAdd}
-          style={{ width: "15px", height: "15px", color: "#FF0000" }}
-          onClick={handleUserAddClick}
-        />
+        {userAddIcon && (
+          <FontAwesomeIcon
+            icon={userAddIcon}
+            className={styles.userAdd}
+            style={{ width: "15px", height: "15px", color: "#FF0000" }}
+            onClick={handleUserAddClick}
+          />
+        )}
       </div>
       <div className={styles.sidebarIcon}>
         <FontAwesomeIcon
