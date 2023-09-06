@@ -39,3 +39,5 @@ next-env.d.ts
 project_structure.text
 
 service_account.json
+
+package-lock.json
