@@ -7,7 +7,9 @@ type sampleTextType = {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<sampleTextType>
+  res: NextApiResponse<sampleTextType[]>
 ) {
-  res.status(200).json({ sample: "sampleText" });
+  res
+    .status(200)
+    .json([{ sample: "sampleText" }, { sample: "also sampleText" }]);
 }
