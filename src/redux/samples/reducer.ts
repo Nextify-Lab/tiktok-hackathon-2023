@@ -6,7 +6,7 @@ import {
 } from "./actions";
 
 interface SampleState {
-  data: any;
+  data: SampleType[];
   loading: boolean;
   error: null | string | undefined;
 }
