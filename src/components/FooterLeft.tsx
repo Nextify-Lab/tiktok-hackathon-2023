@@ -8,16 +8,21 @@ interface FooterLeftProps {
   username: string;
   description: string;
   song: string;
+  handleFeaturedItemClick: () => void;
 }
 
 const FooterLeft: React.FC<FooterLeftProps> = ({
   username,
   description,
   song,
+  handleFeaturedItemClick,
 }) => {
   return (
     <div className={styles.footerContainer}>
-      <FeaturedItemPopup itemName={"Hardcoded "} />
+      <FeaturedItemPopup
+        itemName={"Hardcoded "}
+        handleFeaturedItemClick={handleFeaturedItemClick}
+      />
       <div className={styles.footerLeft}>
         <div className={styles.text}>
           <h3>@{username}</h3>

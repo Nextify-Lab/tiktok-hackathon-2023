@@ -11,6 +11,10 @@ function ShopPage() {
       ? router.query.groupbuyId
       : undefined;
 
+  if (!shopId) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <ViewShop shopId={shopId} groupbuyId={groupbuyId} />

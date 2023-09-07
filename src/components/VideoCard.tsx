@@ -10,6 +10,7 @@ import FooterRight from "../components/FooterRight";
 import styles from "./VideoCard.module.css";
 import GroupBuyPopup from "./ShopFlow/GroupBuyPopup";
 import ViewItem from "./ShopFlow/ViewItem";
+import { useRouter } from "next/router";
 
 interface VideoCardProps {
   url: string;
@@ -23,6 +24,7 @@ interface VideoCardProps {
   profilePic: string;
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
+  itemId: string;
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -37,11 +39,6 @@ export const FOOD_ITEM_DESC = `
 4. Stir Fried Meat With Fungus 鱼香肉丝 - Square Packaging
 `;
 
-const handleGroupBuyPopupClick = (
-  setIsViewingItemPanel: Dispatch<SetStateAction<boolean>>
-) => {
-  setIsViewingItemPanel(true);
-};
 const VideoCard: React.FC<VideoCardProps> = ({
   url,
   username,
@@ -54,10 +51,23 @@ const VideoCard: React.FC<VideoCardProps> = ({
   profilePic,
   setVideoRef,
   autoplay,
+  itemId,
 }) => {
-  const [isViewingItemPanel, setIsViewingItemPanel] = useState(false);
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const router = useRouter();
+
+  const handleGroupBuyPopupClick = () => {
+    console.log("group buy popup clicked", itemId);
+    // todo: POST a new groupbuy
+    // store the groupbuyId from the response
+    const groupbuyId = "123";
+    // then redirect to the groupbuy page
+    router.push(`/item/${itemId}?groupbuyId=${groupbuyId}`);
+  };
+  const handleFeaturedItemClick = () => {
+    router.push(`/item/${itemId}`);
+  };
 
   useEffect(() => {
     if (autoplay && videoRef.current) {
@@ -77,14 +87,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   return (
     <div className={styles.video}>
-      {isViewingItemPanel && (
-        <ViewItem
-          imageUrl={FOOD_ITEM_IMAGE_URL}
-          title={FOOD_ITEM_TITLE}
-          price={FOOD_ITEM_PRICE}
-          description={FOOD_ITEM_DESC}
-        />
-      )}
       {/* The video element */}
       <video
         className={styles.player}
@@ -99,7 +101,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
       <GroupBuyPopup
         moneySaved={0.4}
         nearbyNum={8}
-        onClick={() => handleGroupBuyPopupClick(setIsViewingItemPanel)}
+        onClick={() => handleGroupBuyPopupClick()}
       />
       <div className={styles["bottom-controls"]}>
         <div className={styles["footer-left"]}>
@@ -107,6 +109,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
             username={username}
             description={description}
             song={song}
+            handleFeaturedItemClick={() => handleFeaturedItemClick()}
           />
         </div>
         <div className={styles["footer-right"]}>

@@ -26,6 +26,7 @@ const ClosableBox: React.FC<ClosableBoxProps> = ({ children, closable }) => {
             right={"0.5"}
             top={"0.5"}
             onClick={() => setIsClosed(true)}
+            zIndex={1000}
           />
         )}
       </Box>
