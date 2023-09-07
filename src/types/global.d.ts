@@ -51,28 +51,28 @@ class Shop {
 class Item {
   productId: string;
   productName: string;
-  shop: Shop;
-  buyer: Buyer;
-  stock: number;
+  shopId: string;
+  buyerID: string | null; // Allow null value
   price: number;
   description: string;
+  deleted: boolean;
 
   constructor(
     productId: string,
     productName: string,
-    shop: Shop,
-    buyer: Buyer,
-    stock: number,
+    shopId: string,
+    buyerID: string | null, // Adjust the type here
     price: number,
-    description: string
+    description: string,
+    deleted: boolean = false
   ) {
     this.productId = productId;
-    this.productName = productName.trim(); // Sanitize the productName by removing leading/trailing whitespaces
-    this.shop = shop;
-    this.buyer = buyer;
-    this.stock = Math.abs(stock); // Ensure stock is a positive value
-    this.price = Math.abs(price); // Ensure price is a positive value
+    this.productName = productName.trim();
+    this.shopId = shopId;
+    this.buyerID = buyerID;
+    this.price = Math.abs(price);
     this.description = description;
+    this.deleted = deleted;
   }
 }
 
