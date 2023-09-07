@@ -1,21 +1,13 @@
-import React, { useState } from "react";
-import QRCode from "qrcode.react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, ButtonProps } from "@chakra-ui/react";
 
-const QRCodeButton: React.FC<{ text?: string }> = ({
-  text = "Sample QR Data",
-}) => {
-  const [showQR, setShowQR] = useState(false);
-
+const QRCodeButton: React.FC<ButtonProps> = (props) => {
   return (
-    <div>
-      <button onClick={() => setShowQR(!showQR)}>
-        <FontAwesomeIcon icon={faQrcode} /> Show QR Code
-      </button>
-
-      {showQR && <QRCode value={text} />}
-    </div>
+    <Button {...props} variant="icon" iconSpacing="0">
+      <FontAwesomeIcon icon={faQrcode} />
+    </Button>
   );
 };
 

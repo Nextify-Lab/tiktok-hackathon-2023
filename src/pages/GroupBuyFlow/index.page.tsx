@@ -1,21 +1,50 @@
 // pages/SomePage.tsx
 
-import { Button, useDisclosure } from "@chakra-ui/react";
-import BottomSheet from "@/components/GroupBuyFlow/BottomSheet";
+import BottomSheetGroupBuyModifiedChild from "@/components/GroupBuyFlow/BottomSheetGroupBuyModifiedChild";
+import QRCodeButton from "@/components/GroupBuyFlow/QRCodeButton";
+import ShareButton from "@/components/GroupBuyFlow/ShareButton";
+import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const SomePage: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [sheetTitle, setSheetTitle] = useState("");
+  const [sheetDesc, setSheetDesc] = useState<"qr" | "share">("qr");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+  const currentUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`;
+  console.log(currentUrl);
+
+  const clickQRCode = () => {
+    setIsOpen(true);
+    setSheetDesc("qr");
+    setSheetTitle("Please Scan Here");
+  };
+
+  const clickShare = () => {
+    setIsOpen(true);
+    setSheetDesc("share");
+    setSheetTitle("Share Link");
+  };
+
+  const closeBottomSheet = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <div>
-      <Button onClick={onOpen}>Open Bottom Sheet</Button>
-
-      <BottomSheet isOpen={isOpen} onClose={onClose} title="Your Title Here">
-        {/* Content for the bottom sheet */}
-        Put your content here. This could be buttons, text, or any other
-        components you wish to include in the bottom sheet.
-      </BottomSheet>
-    </div>
+    <Box>
+      <QRCodeButton onClick={clickQRCode} />
+      <ShareButton onClick={clickShare} />
+      <BottomSheetGroupBuyModifiedChild
+        isOpen={isOpen}
+        onClose={closeBottomSheet}
+        title={sheetTitle}
+        desc={sheetDesc}
+        currentUrl={currentUrl}
+      />
+      {/* Content for the bottom sheet */}
+    </Box>
   );
 };
 
