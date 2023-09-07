@@ -5,13 +5,16 @@ import styles from "./FooterLeft.module.css";
 import FeaturedItemPopup from "./ShopFlow/FeaturedItemPopup";
 
 interface FooterLeftProps {
-  username: String;
-  description: String;
-  song: String;
+  username: string;
+  description: string;
+  song: string;
 }
-export default function FooterLeft(props: FooterLeftProps) {
-  const { username, description, song } = props;
 
+const FooterLeft: React.FC<FooterLeftProps> = ({
+  username,
+  description,
+  song,
+}) => {
   return (
     <div className={styles.footerContainer}>
       <FeaturedItemPopup itemName={"Hardcoded "} />
@@ -21,10 +24,6 @@ export default function FooterLeft(props: FooterLeftProps) {
           <p>{description}</p>
           <div className={styles.ticker}>
             <FontAwesomeIcon icon={faMusic} style={{ width: "30px" }} />
-            {/* eslint-disable-next-line jsx-a11y/no-distracting-elements */}
-            {/* <marquee direction="left" scrollamount="20">
-              <span>{song}</span>
-            </marquee> */}
             <div className={styles.scrollingTextContainer}>
               <div className={styles.scrollingText}>
                 <span>{song}</span>
@@ -35,4 +34,6 @@ export default function FooterLeft(props: FooterLeftProps) {
       </div>
     </div>
   );
-}
+};
+
+export default FooterLeft;
