@@ -9,14 +9,14 @@ import React from "react";
 
 const Payment = () => {
   return (
-    <Box>
+    <>
       <Header />
       <BuyerDetails />
       <ProductDetails />
       <OrderSummary />
       <PaymentMethod />
       <FooterPrice />
-    </Box>
+    </>
   );
 };
 
