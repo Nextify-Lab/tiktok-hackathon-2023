@@ -6,7 +6,7 @@ const ProductDetails = () => {
   const money = 10; // Placeholder for shipping cost
 
   return (
-    <Box p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" mb={4}>
+    <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First row - shop title */}
       <Text fontSize="xl" fontWeight="bold" mb={4}>
         Shop Title
