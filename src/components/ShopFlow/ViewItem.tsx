@@ -7,6 +7,7 @@ interface ViewItemProps {
   title: string;
   price: string;
   description?: string;
+  groupbuyId?: string;
 }
 
 const ViewItem: React.FC<ViewItemProps> = ({
@@ -14,12 +15,13 @@ const ViewItem: React.FC<ViewItemProps> = ({
   title,
   price,
   description,
+  groupbuyId,
 }) => {
   return (
     <Box borderWidth="1px" borderRadius="lg" padding="5" maxWidth="400px">
       <Image src={imageUrl} alt={title} borderRadius="md" />
       <Text fontWeight="bold" fontSize="xl" mt="4">
-        {title}
+        {title} {groupbuyId && <span>(Groupbuy Id: {groupbuyId})</span>}
       </Text>
       <Text color="green.500" fontSize="lg" fontWeight="semibold">
         ${price}
@@ -29,7 +31,7 @@ const ViewItem: React.FC<ViewItemProps> = ({
         <Button colorScheme="teal" variant="solid" flex="1">
           Add to Cart
         </Button>
-        <Button colorScheme="orange" variant="solid" flex="1">
+        <Button colorScheme="red" variant="solid" flex="1">
           Buy Now
         </Button>
       </Stack>

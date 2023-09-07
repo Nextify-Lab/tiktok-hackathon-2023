@@ -12,7 +12,7 @@ import GroupBuyPopup from "./ShopFlow/GroupBuyPopup";
 import ViewItem from "./ShopFlow/ViewItem";
 
 export const FOOD_ITEM_IMAGE_URL =
-  "https://down-sg.img.susercontent.com/file/sg-50009109-03c9dd04fc67ab4a70690002b6ebefca";
+  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1";
 export const FOOD_ITEM_TITLE =
   "CHEAPEST SELF HEATING RICE🔥 这味香 15 Mins Flavour Rice";
 export const FOOD_ITEM_PRICE = "2.49";
