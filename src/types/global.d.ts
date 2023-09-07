@@ -22,27 +22,34 @@ class Buyer {
 
 class Shop {
   id: string;
+  storeName: string;
   tiktokUsername: string;
   groupBuys: GroupBuy[];
   items: Item[];
   rating: number;
+  deleted: boolean;
 
   constructor(
     id: string,
+    storeName: string,
     tiktokUsername: string,
     groupBuys: GroupBuy[],
     items: Item[],
-    rating: number
+    rating: number,
+    deleted: boolean
   ) {
     this.id = id;
-    this.tiktokUsername = tiktokUsername.trim(); // Sanitize the tiktokUsername by removing leading/trailing whitespaces
+    this.storeName = storeName.trim();
+    this.tiktokUsername = tiktokUsername.trim();
     this.groupBuys = groupBuys;
     this.items = items;
     this.rating = rating;
+    this.deleted = deleted;
   }
 }
 
 class Item {
+  productId: string;
   productName: string;
   shop: Shop;
   buyer: Buyer;
@@ -51,6 +58,7 @@ class Item {
   description: string;
 
   constructor(
+    productId: string,
     productName: string,
     shop: Shop,
     buyer: Buyer,
@@ -58,6 +66,7 @@ class Item {
     price: number,
     description: string
   ) {
+    this.productId = productId;
     this.productName = productName.trim(); // Sanitize the productName by removing leading/trailing whitespaces
     this.shop = shop;
     this.buyer = buyer;
