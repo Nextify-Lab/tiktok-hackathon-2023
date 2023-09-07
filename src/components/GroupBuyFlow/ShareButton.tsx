@@ -5,7 +5,14 @@ import { Button, ButtonProps } from "@chakra-ui/react";
 
 const ShareButton: React.FC<ButtonProps> = (props) => {
   return (
-    <Button variant="icon" iconSpacing="0" {...props}>
+    <Button
+      variant="icon"
+      iconSpacing="0"
+      {...props}
+      bg={"white"}
+      color={"black"}
+      boxShadow={"xl"}
+    >
       <FontAwesomeIcon icon={faShareAlt} />
     </Button>
   );

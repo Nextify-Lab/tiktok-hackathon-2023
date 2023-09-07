@@ -18,6 +18,7 @@ const videoUrls = [
     comments: 13,
     saves: 23,
     shares: 1,
+    itemId: "lVL5Kmlc29Th5cHQFa2p",
   },
   {
     url: "/videos/video2.mp4",
@@ -31,6 +32,7 @@ const videoUrls = [
     comments: 3121,
     saves: 254,
     shares: 420,
+    itemId: "oJbsrr0KIADtiIzggY9B",
   },
   {
     url: "/videos/video3.mp4",
@@ -44,6 +46,7 @@ const videoUrls = [
     comments: 238,
     saves: 12,
     shares: 117,
+    itemId: "lVL5Kmlc29Th5cHQFa2p",
   },
   {
     url: "/videos/video4.mp4",
@@ -57,6 +60,7 @@ const videoUrls = [
     comments: 230,
     saves: 1037,
     shares: 967,
+    itemId: "lVL5Kmlc29Th5cHQFa2p",
   },
 ];
 
@@ -126,6 +130,7 @@ function ForYouPage() {
           profilePic={video.profilePic}
           setVideoRef={handleVideoRef(index)}
           autoplay={index === 0}
+          itemId={video.itemId}
         />
       ))}
     </Layout>

@@ -19,7 +19,6 @@ function ItemPage() {
       ? router.query.groupbuyId
       : undefined;
 
-  console.log("itemId", itemId, "groupbuyId", groupbuyId);
   return (
     <div>
       <ViewItem
@@ -28,6 +27,7 @@ function ItemPage() {
         price={FOOD_ITEM_PRICE}
         description={FOOD_ITEM_DESC}
         groupbuyId={groupbuyId}
+        itemId={itemId as string}
       />
     </div>
   );

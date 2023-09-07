@@ -6,20 +6,26 @@ import ClosableBox from "./ClosableBox";
 
 interface FeaturedItemPopupProps {
   itemName: String;
+  handleFeaturedItemClick: () => void;
 }
 
-const FeaturedItemPopup: React.FC<FeaturedItemPopupProps> = ({ itemName }) => {
+const FeaturedItemPopup: React.FC<FeaturedItemPopupProps> = ({
+  itemName,
+  handleFeaturedItemClick,
+}) => {
   return (
-    <ClosableBox closable={false}>
-      <Stack direction={"row"}>
-        <FontAwesomeIcon
-          icon={faBagShopping}
-          bounce
-          style={{ color: "#e69b19" }}
-        />
-        <Text>{itemName}</Text>
-      </Stack>
-    </ClosableBox>
+    <div onClick={() => handleFeaturedItemClick()}>
+      <ClosableBox closable={false}>
+        <Stack direction={"row"}>
+          <FontAwesomeIcon
+            icon={faBagShopping}
+            bounce
+            style={{ color: "#e69b19" }}
+          />
+          <Text>{itemName}</Text>
+        </Stack>
+      </ClosableBox>
+    </div>
   );
 };
 

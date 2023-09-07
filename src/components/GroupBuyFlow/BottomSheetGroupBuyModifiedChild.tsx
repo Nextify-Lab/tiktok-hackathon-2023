@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import BottomSheetGroupBuy from "./BottomSheetGroupBuy";
 import QRCode from "qrcode.react";
-import { Box, IconButton } from "@chakra-ui/react";
+import { Box, Button, IconButton, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
+import { FaWhatsapp, FaTelegramPlane, FaQrcode } from "react-icons/fa";
 
 interface BottomSheetModifiedChildProps {
   isOpen: boolean;
@@ -49,18 +49,26 @@ const BottomSheetModifiedChild: React.FC<BottomSheetModifiedChildProps> = ({
           alignItems="center"
           flexDirection="column"
         >
-          <IconButton
+          <Button
+            leftIcon={<FaWhatsapp />}
             m={2}
-            aria-label="Share on WhatsApp"
-            icon={<FaWhatsapp />}
+            width={"full"}
+            bg={"green.500"}
+            color={"white"}
             onClick={handleWhatsAppShare}
-          />
-          <IconButton
+          >
+            Share on WhatsApp
+          </Button>
+          <Button
+            leftIcon={<FaTelegramPlane />}
             m={2}
-            aria-label="Share on Telegram"
-            icon={<FaTelegramPlane />}
+            width={"full"}
+            bg={"blue.500"}
+            color={"white"}
             onClick={handleTelegramShare}
-          />
+          >
+            Share on Telegram
+          </Button>
         </Box>
       )}
     </BottomSheetGroupBuy>

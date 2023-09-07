@@ -14,7 +14,6 @@ const SomePage: React.FC = () => {
 
   const router = useRouter();
   const currentUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`;
-  console.log(currentUrl);
 
   const clickQRCode = () => {
     setIsOpen(true);

@@ -15,11 +15,16 @@ const GroupBuyPopup: React.FC<GroupBuyPopupProps> = ({
 }) => {
   return (
     <div
-      onClick={onClick}
-      style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10 }}
+      style={{
+        position: "absolute",
+        top: "10px",
+        right: "10px",
+        zIndex: 10,
+        cursor: "pointer",
+      }}
     >
       <ClosableBox closable={true}>
-        <Stack direction={"column"}>
+        <Stack direction={"column"} onClick={onClick}>
           <Text>
             {nearbyNum.toString()} people near you have placed orders.
           </Text>
