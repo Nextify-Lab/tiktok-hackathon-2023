@@ -1,8 +1,33 @@
-import React, { useRef, useEffect } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import FooterLeft from "../components/FooterLeft";
 import FooterRight from "../components/FooterRight";
 import styles from "./VideoCard.module.css";
+import GroupBuyPopup from "./ShopFlow/GroupBuyPopup";
+import ViewItem from "./ShopFlow/ViewItem";
 
+export const FOOD_ITEM_IMAGE_URL =
+  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1";
+export const FOOD_ITEM_TITLE =
+  "CHEAPEST SELF HEATING RICE🔥 这味香 15 Mins Flavour Rice";
+export const FOOD_ITEM_PRICE = "2.49";
+export const FOOD_ITEM_DESC = `
+1. Stir Fried Meat With Fungus 鱼香肉丝 - Round Packaging
+2. Curry Chicken 咖喱鸡肉 - Round Packaging
+3. Sour Vege Meat 酸菜肉丝 - Round Packaging
+4. Stir Fried Meat With Fungus 鱼香肉丝 - Square Packaging
+`;
+
+const handleGroupBuyPopupClick = (
+  setIsViewingItemPanel: Dispatch<SetStateAction<boolean>>
+) => {
+  setIsViewingItemPanel(true);
+};
 const VideoCard = (props: {
   url: any;
   username: any;
@@ -29,6 +54,9 @@ const VideoCard = (props: {
     setVideoRef,
     autoplay,
   } = props;
+
+  const [isViewingItemPanel, setIsViewingItemPanel] = useState(false);
+
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -47,6 +75,14 @@ const VideoCard = (props: {
 
   return (
     <div className={styles.video}>
+      {isViewingItemPanel && (
+        <ViewItem
+          imageUrl={FOOD_ITEM_IMAGE_URL}
+          title={FOOD_ITEM_TITLE}
+          price={FOOD_ITEM_PRICE}
+          description={FOOD_ITEM_DESC}
+        />
+      )}
       {/* The video element */}
       <video
         className={styles.player}
@@ -58,6 +94,11 @@ const VideoCard = (props: {
         loop
         src={url}
       ></video>
+      <GroupBuyPopup
+        moneySaved={0.4}
+        nearbyNum={8}
+        onClick={() => handleGroupBuyPopupClick(setIsViewingItemPanel)}
+      />
       <div className={styles["bottom-controls"]}>
         <div className={styles["footer-left"]}>
           {/* The left part of the container */}
