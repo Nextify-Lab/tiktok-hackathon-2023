@@ -6,6 +6,7 @@ import { db } from "../../../firebase/admin";
 const itemsCollection = db.collection("items");
 const buyersCollection = db.collection("buyers");
 const shopsCollection = db.collection("shops");
+const productsCollection = db.collection("products");
 
 export default async function handler(
   req: NextApiRequest,
@@ -60,6 +61,30 @@ export default async function handler(
           // Fetch the updated item data after the update
           const updatedItemDoc = await itemsCollection.doc(id).get();
           const updatedItemDataAfterUpdate = updatedItemDoc.data();
+
+          // Decrease the stock by one in the productsCollection
+          const productId = updatedItemDataAfterUpdate?.productId;
+
+          if (productId) {
+            const productDoc = await productsCollection.doc(productId).get();
+            const productData = productDoc.data();
+
+            if (productData) {
+              // Update the product's stock
+              const updatedStock = productData.stock - 1;
+              await productsCollection
+                .doc(productId)
+                .update({ stock: updatedStock });
+            } else {
+              res.status(404).json({ error: "Product not found" });
+              return;
+            }
+          } else {
+            res
+              .status(500)
+              .json({ error: "Product ID not found in item data" });
+            return;
+          }
 
           res.status(200).json(updatedItemDataAfterUpdate);
         } catch (error: any) {

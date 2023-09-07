@@ -24,8 +24,8 @@ class Shop {
   id: string;
   storeName: string;
   tiktokUsername: string;
-  groupBuys: GroupBuy[];
-  items: Item[];
+  groupBuyIds: string[];
+  productIds: string[];
   rating: number;
   deleted: boolean;
 
@@ -33,18 +33,43 @@ class Shop {
     id: string,
     storeName: string,
     tiktokUsername: string,
-    groupBuys: GroupBuy[],
-    items: Item[],
+    groupBuyIds: string[],
+    productIds: string[],
     rating: number,
     deleted: boolean
   ) {
     this.id = id;
     this.storeName = storeName.trim();
     this.tiktokUsername = tiktokUsername.trim();
-    this.groupBuys = groupBuys;
-    this.items = items;
+    this.groupBuyIds = groupBuyIds;
+    this.productIds = productIds;
     this.rating = rating;
     this.deleted = deleted;
+  }
+}
+
+class Product {
+  shopId: string;
+  price: number;
+  description: string;
+  stock: number;
+  productName: string;
+  itemSerialNumbers: string[];
+
+  constructor(
+    shopId: string,
+    price: number,
+    description: string,
+    stock: number,
+    productName: string,
+    itemSerialNumbers: string[]
+  ) {
+    this.shopId = shopId;
+    this.price = Math.abs(price);
+    this.description = description;
+    this.stock = stock;
+    this.productName = productName.trim();
+    this.itemSerialNumbers = itemSerialNumbers;
   }
 }
 
@@ -52,7 +77,7 @@ class Item {
   productId: string;
   productName: string;
   shopId: string;
-  buyerID: string | null; // Allow null value
+  buyerID: string | null;
   price: number;
   description: string;
   deleted: boolean;
@@ -61,7 +86,7 @@ class Item {
     productId: string,
     productName: string,
     shopId: string,
-    buyerID: string | null, // Adjust the type here
+    buyerID: string | null,
     price: number,
     description: string,
     deleted: boolean = false
