@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import styles from "./FooterLeft.module.css";
+import FeaturedItemPopup from "./ShopFlow/FeaturedItemPopup";
 
 interface FooterLeftProps {
   username: string;
@@ -16,6 +17,7 @@ const FooterLeft: React.FC<FooterLeftProps> = ({
 }) => {
   return (
     <div className={styles.footerContainer}>
+      <FeaturedItemPopup itemName={"Hardcoded "} />
       <div className={styles.footerLeft}>
         <div className={styles.text}>
           <h3>@{username}</h3>
