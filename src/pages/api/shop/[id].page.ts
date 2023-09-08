@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../../firebase/admin";
 
 const shopsCollection = db.collection("shops");
+const productsCollection = db.collection("products");
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,7 +10,7 @@ export default async function handler(
 ) {
   const {
     method,
-    query: { id },
+    query: { id, getProducts },
     body,
   } = req;
 
@@ -30,7 +31,26 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        res.status(200).json(shopData);
+        if (getProducts === "true") {
+          // Retrieve product information for the shop using productIds
+          const productIds = shopData.productIds || [];
+          const productDocs = await Promise.all(
+            productIds.map(
+              (
+                productId: string // Specify the type
+              ) => productsCollection.doc(productId).get()
+            )
+          );
+
+          const products = productDocs.map((productDoc) => ({
+            id: productDoc.id,
+            ...productDoc.data(),
+          }));
+
+          res.status(200).json({ ...shopData, products });
+        } else {
+          res.status(200).json(shopData);
+        }
         break;
 
       case "PATCH":

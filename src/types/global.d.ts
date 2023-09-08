@@ -101,13 +101,6 @@ class Item {
   }
 }
 
-interface GroupBuy {
-  id: string;
-  buyers: Buyer[];
-  shop: Shop;
-  messages?: Message[]; // Optional
-}
-
 class GroupBuy {
   id: string;
   buyers: Buyer[];

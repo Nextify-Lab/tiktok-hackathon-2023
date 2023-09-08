@@ -83,7 +83,24 @@ export default async function handler(
 
           // Update the product information
           await productsCollection.doc(id).update(updatedData);
-          res.status(200).json({ message: "Product updated successfully" });
+
+          // Update the items in the itemsCollection where buyerID is null
+          const itemSerialNumbers = productData.itemSerialNumbers || [];
+
+          for (const itemSerialNumber of itemSerialNumbers) {
+            const itemDoc = await itemsCollection.doc(itemSerialNumber).get();
+            const itemData = itemDoc.data();
+
+            if (itemData && itemData.buyerID === null) {
+              await itemsCollection.doc(itemSerialNumber).update(updatedData);
+            }
+          }
+
+          res
+            .status(200)
+            .json({
+              message: "Product and related items updated successfully",
+            });
         } catch (error: any) {
           res.status(500).json({ error: error.toString() });
         }

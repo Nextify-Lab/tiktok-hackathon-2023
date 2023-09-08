@@ -58,7 +58,14 @@ export default async function handler(
 
     case "POST":
       try {
-        const newShop = req.body as Shop;
+        const newShopData = req.body as Omit<Shop, "id">; // Omit 'id' field
+
+        // Initialize productIds and groupBuyIds as empty arrays if they are not provided
+        const newShop: Omit<Shop, "id"> = {
+          ...newShopData,
+          productIds: newShopData.productIds || [],
+          groupBuyIds: newShopData.groupBuyIds || [],
+        };
 
         // Check if a shop with the same tiktokUsername and storeName exists
         const shopExistsQuery = await shopsCollection
