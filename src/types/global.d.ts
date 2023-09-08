@@ -28,6 +28,7 @@ class Shop {
   productIds: string[];
   rating: number;
   deleted: boolean;
+  products?: Product[];
 
   constructor(
     id: string,
@@ -36,7 +37,8 @@ class Shop {
     groupBuyIds: string[],
     productIds: string[],
     rating: number,
-    deleted: boolean
+    deleted: boolean,
+    products?: Product[]
   ) {
     this.id = id;
     this.storeName = storeName.trim();
@@ -45,10 +47,12 @@ class Shop {
     this.productIds = productIds;
     this.rating = rating;
     this.deleted = deleted;
+    this.products = products;
   }
 }
 
 class Product {
+  id: string;
   shopId: string;
   price: number;
   description: string;
