@@ -25,7 +25,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   return (
     <Drawer placement="bottom" onClose={onClose} isOpen={isOpen} size="full">
       <DrawerOverlay>
-        <DrawerContent style={{ maxHeight: "50%" }}>
+        <DrawerContent style={{ maxHeight: "75%" }}>
           <DrawerCloseButton />
           <DrawerHeader>{title}</DrawerHeader>
           <DrawerBody>{children}</DrawerBody>

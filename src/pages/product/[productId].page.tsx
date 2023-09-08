@@ -19,7 +19,11 @@ function ItemPage() {
     return <Spinner />;
   }
 
-  return <ViewItem groupbuyId={groupbuyId} productId={productId as string} />;
+  return (
+    <div>
+      <ViewItem groupbuyId={groupbuyId} productId={productId as string} />
+    </div>
+  );
 }
 
 export default ItemPage;
