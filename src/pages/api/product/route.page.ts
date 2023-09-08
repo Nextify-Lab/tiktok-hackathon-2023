@@ -114,6 +114,13 @@ export default async function handler(
         // Update the product with itemSerialNumbers
         await productRef.update({ itemSerialNumbers });
 
+        // Add the product ID to the shop's productIds array
+        const shopDoc = await shopExistsDoc.ref.get();
+        const currentProductIds = shopDoc.get("productIds") || [];
+        currentProductIds.push(productRef.id);
+
+        await shopDoc.ref.update({ productIds: currentProductIds });
+
         res
           .status(201)
           .json({ id: productRef.id, ...req.body, itemSerialNumbers });
