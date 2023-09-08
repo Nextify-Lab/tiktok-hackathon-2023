@@ -1,6 +1,6 @@
 // pages/product/[productId].tsx
 
-import ViewItem from "@/components/ShopFlow/ViewItem";
+import ViewItem from "@/components/ShopFlow/ViewProduct";
 import {
   FOOD_ITEM_IMAGE_URL,
   FOOD_ITEM_TITLE,
