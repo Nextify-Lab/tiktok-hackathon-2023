@@ -24,7 +24,6 @@ export default async function handler(
     switch (method) {
       case "GET":
         try {
-          // Retrieve the groupBuy by ID
           const groupBuyDoc = await groupBuysCollection.doc(id).get();
           const groupBuyData = groupBuyDoc.data();
 
@@ -49,7 +48,6 @@ export default async function handler(
             return;
           }
 
-          // Create a transaction for each buyer in the group buy
           for (const buyerId in groupBuyData.selections) {
             const purchases = groupBuyData.selections[buyerId];
             await transactionsCollection.add({

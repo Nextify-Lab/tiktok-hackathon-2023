@@ -1,3 +1,4 @@
+// Take note db schema might differ
 class Buyer {
   id: string;
   username: string;

@@ -33,11 +33,11 @@ export default async function handler(
             for (const buyerId in buyerSelections) {
               if (buyerSelections.hasOwnProperty(buyerId)) {
                 if (buyerSelections[buyerId][productKey] >= 0) {
-                  return true; // If any buyer has selected the product, we include the doc in results
+                  return true;
                 }
               }
             }
-            return false; // Exclude the doc from results if no buyer has selected the product
+            return false;
           });
         }
 
@@ -60,8 +60,6 @@ export default async function handler(
     case "POST":
       try {
         const { shopId } = req.body;
-
-        // Create the groupBuy in the groupBuysCollection with initial values
         const groupBuyRef = await groupBuysCollection.add({
           shopId,
           selections: {},
