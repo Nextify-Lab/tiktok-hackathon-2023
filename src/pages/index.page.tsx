@@ -73,7 +73,7 @@ export default function ForYouPage() {
           profilePic={video.profilePic}
           setVideoRef={handleVideoRef(index)}
           autoplay={index === 0}
-          itemId={video.itemId}
+          productId={video.productId}
         />
       ))}
     </Layout>

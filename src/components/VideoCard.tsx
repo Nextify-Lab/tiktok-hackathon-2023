@@ -24,7 +24,7 @@ interface VideoCardProps {
   profilePic: string;
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
-  itemId: string;
+  productId: string;
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -51,22 +51,22 @@ const VideoCard: React.FC<VideoCardProps> = ({
   profilePic,
   setVideoRef,
   autoplay,
-  itemId,
+  productId,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const router = useRouter();
 
   const handleGroupBuyPopupClick = () => {
-    console.log("group buy popup clicked", itemId);
+    console.log("group buy popup clicked", productId);
     // todo: POST a new groupbuy
     // store the groupbuyId from the response
     const groupbuyId = "123";
     // then redirect to the groupbuy page
-    router.push(`/item/${itemId}?groupbuyId=${groupbuyId}`);
+    router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
   };
   const handleFeaturedItemClick = () => {
-    router.push(`/item/${itemId}`);
+    router.push(`/product/${productId}`);
   };
 
   useEffect(() => {

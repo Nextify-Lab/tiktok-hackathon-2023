@@ -25,9 +25,9 @@ const BuyerDetails = () => {
       </Box>
 
       {/* Right column - Chevron Icon */}
-      <Box ml={4}>
+      {/* <Box ml={4}>
         <FaChevronRight size={24} />
-      </Box>
+      </Box> */}
     </Flex>
   );
 };

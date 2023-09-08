@@ -1,15 +1,31 @@
 import React, { useState } from "react";
 import { Flex, Box, Image, Button, Text } from "@chakra-ui/react";
 
-const ProductDetails = () => {
-  const [stock, setStock] = useState(1);
-  const money = 10; // Placeholder for shipping cost
+interface ProductDetailsProps {
+  stock: number;
+  setStock: React.Dispatch<React.SetStateAction<number>>;
+  shippingPrice: number;
+  remainingStock: number;
+  productPrice: number;
+  productName: string;
+  shopName: string;
+}
+const ProductDetails: React.FC<ProductDetailsProps> = ({
+  stock,
+  setStock,
+  shippingPrice,
+  remainingStock,
+  productPrice,
+  productName,
+  shopName,
+}) => {
+  const money = shippingPrice; // Placeholder for shipping cost
 
   return (
     <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First row - shop title */}
       <Text fontSize="xl" fontWeight="bold" mb={4}>
-        Shop Title
+        {shopName ? shopName : "Shop Name"}
       </Text>
 
       {/* Second row */}
@@ -25,9 +41,10 @@ const ProductDetails = () => {
         {/* Right column - item details */}
         <Box flex="1">
           <Text mb={2} fontWeight="semibold">
-            Item Name
+            {productName}
           </Text>
-          <Text mb={2}>Price: S$price</Text>
+          <Text mb={2}>Price: S${productPrice}</Text>
+          <Text mb={2}>Remaining Stock: {remainingStock}</Text>
           <Flex alignItems="center">
             <Button
               size="sm"

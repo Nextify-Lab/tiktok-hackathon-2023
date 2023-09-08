@@ -11,7 +11,7 @@ export const videoUrls: Video[] = [
     comments: 13,
     saves: 23,
     shares: 1,
-    itemId: "lVL5Kmlc29Th5cHQFa2p"
+    productId: "XPGeULgwWqzglUZQBZdP"
   },
   {
     url: "/videos/video2.mp4",
@@ -25,7 +25,7 @@ export const videoUrls: Video[] = [
     comments: 3121,
     saves: 254,
     shares: 420,
-    itemId: "oJbsrr0KIADtiIzggY9B"
+    productId: "XPGeULgwWqzglUZQBZdP"
 
   },
   {
@@ -40,7 +40,7 @@ export const videoUrls: Video[] = [
     comments: 238,
     saves: 12,
     shares: 117,
-    itemId: "tPapgM1CqD0mOOjg33ZJ"
+    productId: "XPGeULgwWqzglUZQBZdP"
 
   },
   {
@@ -55,7 +55,7 @@ export const videoUrls: Video[] = [
     comments: 230,
     saves: 1037,
     shares: 967,
-    itemId: "vtDHAGcIsePYxb9maqla"
+    productId: "XPGeULgwWqzglUZQBZdP"
 
   },
 ];

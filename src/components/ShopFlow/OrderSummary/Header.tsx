@@ -2,8 +2,10 @@ import React from "react";
 import { Box, Center, IconButton, Text } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
   return (
     <Box
       as="header"
@@ -15,16 +17,15 @@ const Header = () => {
     >
       <Box display="flex" alignItems="center">
         {/* Go Back Icon */}
-        <Link href="/">
-          <IconButton
-            aria-label="Go back"
-            icon={<ArrowBackIcon />}
-            variant="ghost"
-            onClick={() => {
-              /* you can add additional functionality here if needed */
-            }}
-          />
-        </Link>
+        <IconButton
+          aria-label="Go back"
+          icon={<ArrowBackIcon />}
+          variant="ghost"
+          onClick={() => {
+            /* you can add additional functionality here if needed */
+            router.back();
+          }}
+        />
 
         {/* Centered Text */}
         <Center flex="1">
