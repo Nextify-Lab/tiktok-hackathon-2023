@@ -34,7 +34,6 @@ export default async function handler(
             .get();
 
           if (buyerId) {
-            // If both buyerId and productId are present, find the intersection of the two result sets.
             const productIds = new Set(
               productSnapshot.docs.map((doc) => doc.id)
             );

@@ -33,7 +33,7 @@ export default async function handler(
 
         const querySnapshot = await queryRef.get();
         const products = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Include the document ID
+          id: doc.id,
           ...doc.data(),
         }));
 
@@ -68,11 +68,10 @@ export default async function handler(
           price,
           description,
           productName,
-          stock, // Include stock value
+          stock,
           deleted: false,
         });
 
-        // Add the product ID to the shop's productIds array
         const shopDoc = await shopExistsDoc.ref.get();
         const currentProductIds = shopDoc.get("productIds") || [];
         currentProductIds.push(productRef.id);
