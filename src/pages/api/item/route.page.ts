@@ -1,5 +1,3 @@
-// api/item/route
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../../firebase/admin";
 
@@ -20,37 +18,61 @@ export default async function handler(
           return;
         }
 
-        let queryRef: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> =
-          itemsCollection.where("deleted", "==", false);
+        // Fetch all items that are not deleted first
+        const notDeletedItemsSnapshot = await itemsCollection
+          .where("deleted", "==", false)
+          .get();
+        let notDeletedItems = notDeletedItemsSnapshot.docs.map((doc) =>
+          doc.data()
+        );
 
-        // Handle price query
-        if (query.price) {
-          const value = parseFloat(query.price as string);
-          if (!isNaN(value)) {
-            queryRef = queryRef.where("price", "<=", value);
-          } else {
-            res.status(400).json({ error: `Invalid price parameter` });
-            return;
-          }
+        const { price, productName, ...otherFilters } = query;
+
+        if (price) {
+          const priceItemsSnapshot = await itemsCollection
+            .where("price", "<=", parseFloat(price as string))
+            .get();
+          const priceItems = priceItemsSnapshot.docs.map((doc) => doc.data());
+
+          // Intersect results
+          notDeletedItems = notDeletedItems.filter((item) =>
+            priceItems.some(
+              (priceItem) => priceItem.productId === item.productId
+            )
+          );
         }
 
-        // Handle productName query separately
-        if (query.productName) {
-          const productName = query.productName;
-          queryRef = queryRef.where("productName", "==", productName);
+        if (productName) {
+          const nameItemsSnapshot = await itemsCollection
+            .where("productName", "==", productName)
+            .get();
+          const nameItems = nameItemsSnapshot.docs.map((doc) => doc.data());
+
+          // Intersect results
+          notDeletedItems = notDeletedItems.filter((item) =>
+            nameItems.some((nameItem) => nameItem.productId === item.productId)
+          );
         }
 
         // Handle other parameters
-        for (const key in query) {
-          if (key !== "price" && key !== "productName") {
-            queryRef = queryRef.where(key, "==", query[key]);
-          }
+        for (const key in otherFilters) {
+          const paramItemsSnapshot = await itemsCollection
+            .where(key, "==", otherFilters[key])
+            .get();
+          const paramItems = paramItemsSnapshot.docs.map((doc) => doc.data());
+
+          // Intersect results
+          notDeletedItems = notDeletedItems.filter((item) =>
+            paramItems.some(
+              (paramItem) => paramItem.productId === item.productId
+            )
+          );
         }
 
-        const querySnapshot = await queryRef.get();
-        const items = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        // Return the combined results
+        const items = notDeletedItems.map((item) => ({
+          id: item.productId,
+          ...item,
         }));
 
         res.status(200).json(items);

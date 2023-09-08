@@ -4,41 +4,42 @@ import {
   Text,
   RadioGroup,
   Radio,
-  Icon,
   useRadioGroup,
+  Image,
 } from "@chakra-ui/react";
 import React from "react";
+import { FaPlus, FaChevronRight, FaCreditCard } from "react-icons/fa"; // import the icons you need
 
 const PaymentMethod = () => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "payment",
     defaultValue: "grabPay",
-    // You can have an onChange handler here if required
   });
   const groupProps = getRootProps();
 
   return (
-    <Box p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" mb={4}>
+    <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First Row */}
       <Flex justifyContent="space-between" mb={3}>
-        <Text>Payment method</Text>
+        <Text fontSize="xl" fontWeight="bold">
+          Payment method
+        </Text>
         <Flex alignItems="center" color="gray.500">
           <Text>View all</Text>
-          {/* Replace with your actual chevron icon */}
-          <Icon name="chevron-right-icon" ml={2} />
+          <FaChevronRight size="1.25em" /> {/* Changed Icon */}
         </Flex>
       </Flex>
 
       {/* Second Row */}
       <Flex justifyContent="space-between" mb={3}>
         <Flex flex="1" alignItems="center">
-          <Icon name="plus-icon" />
+          <FaPlus size="1.25em" /> {/* Changed Icon */}
         </Flex>
         <Flex flex="5" justifyContent="flex-start">
           <Text>Add debit/credit card</Text>
         </Flex>
         <Flex flex="1" justifyContent="flex-end" alignItems="center">
-          <Icon name="chevron-right-icon" color="gray.500" />
+          <FaChevronRight size="1.25em" color="gray.500" /> {/* Changed Icon */}
         </Flex>
       </Flex>
 
@@ -46,7 +47,12 @@ const PaymentMethod = () => {
         {/* GrabPay Row */}
         <Flex justifyContent="space-between" mb={3}>
           <Flex flex="1" alignItems="center">
-            <Icon name="grabPay-icon" />
+            <Image
+              src="https://assets.grab.com/wp-content/uploads/sites/8/2021/11/26235239/GrabPay_Final_Logo_RGB_green_StackedVersion-01.png"
+              alt="GrabPay"
+              boxSize="1.25em"
+            />
+            {/* Adjust the path accordingly */}
           </Flex>
           <Flex flex="5" justifyContent="flex-start">
             <Text>GrabPay</Text>
@@ -56,10 +62,31 @@ const PaymentMethod = () => {
           </Flex>
         </Flex>
 
+        {/* Paynow Row */}
+        <Flex justifyContent="space-between" mb={3}>
+          <Flex flex="1" alignItems="center">
+            <Box width="1.25em" overflow="hidden">
+              <Image
+                src="/paynowlogo.jpeg"
+                alt="PayNow"
+                objectPosition="center" // This will position the image to the center
+                height="100%"
+              />
+            </Box>
+            {/* Adjust the path accordingly */}
+          </Flex>
+          <Flex flex="5" justifyContent="flex-start">
+            <Text>PayNow</Text>
+          </Flex>
+          <Flex flex="1" justifyContent="flex-end">
+            <Radio {...getRadioProps({ value: "payNow" })} />
+          </Flex>
+        </Flex>
+
         {/* Visa/Mastercard Row */}
         <Flex justifyContent="space-between" mb={3}>
           <Flex flex="1" alignItems="center">
-            <Icon name="visa-mastercard-icon" />
+            <FaCreditCard size="1.25em" />
           </Flex>
           <Flex flex="5" justifyContent="flex-start">
             <Text>Visa/Mastercard</Text>
