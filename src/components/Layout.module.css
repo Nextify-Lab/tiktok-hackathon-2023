@@ -7,9 +7,14 @@
 
 .container {
   position: relative;
-  height: 667px;
+  /* height: 667px;
   width: 375px;
-  border-radius: 25px;
+  border-radius: 25px; */
+  max-width: 100vw;
+  width: calc(100vh * 0.562);
+  max-height: 100vh; /* 667/375 */
+  height: calc(100vw * 1.7778); /* 667/375 */
+
   overflow: scroll;
   scroll-snap-type: y mandatory;
 }

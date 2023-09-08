@@ -121,4 +121,5 @@ interface Video {
   comments: number;
   saves: number;
   shares: number;
+  itemId: string;
 }

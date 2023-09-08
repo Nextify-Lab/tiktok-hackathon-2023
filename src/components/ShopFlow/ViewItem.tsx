@@ -99,7 +99,6 @@ const ViewItem: React.FC<ViewItemProps> = ({
         borderWidth="1px"
         borderRadius="lg"
         padding="5"
-        maxWidth="400px"
       >
         <Image src={imageUrl} alt={title} borderRadius="md" />
         <Text fontWeight="bold" fontSize="xl" mt="4">
