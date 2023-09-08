@@ -1,4 +1,3 @@
-// import { Buyer } from "@/types/global";
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../../firebase/admin";
 
@@ -61,7 +60,6 @@ export default async function handler(
           return;
         }
 
-        // Merge updated attributes with existing buyer data
         const updatedBuyerData: Partial<Buyer> = {
           ...buyerDoc.data(),
           ...body,
@@ -84,7 +82,6 @@ export default async function handler(
           return;
         }
 
-        // Soft delete the buyer by updating the deleted flag
         await buyersCollection.doc(id).update({ deleted: true });
 
         res.status(200).json({ message: "Buyer deleted successfully" });

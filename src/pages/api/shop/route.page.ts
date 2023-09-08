@@ -20,7 +20,6 @@ export default async function handler(
         let queryRef: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> =
           shopsCollection;
 
-        // Exclude deleted shops by default
         queryRef = queryRef.where("deleted", "==", false);
 
         // Iterate through query parameters
@@ -45,7 +44,7 @@ export default async function handler(
 
         const querySnapshot = await queryRef.get();
         const shops = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Include the document ID
+          id: doc.id,
           ...doc.data(),
         }));
 
@@ -58,16 +57,13 @@ export default async function handler(
 
     case "POST":
       try {
-        const newShopData = req.body as Omit<Shop, "id">; // Omit 'id' field
-
-        // Initialize productIds and groupBuyIds as empty arrays if they are not provided
+        const newShopData = req.body as Omit<Shop, "id">;
         const newShop: Omit<Shop, "id"> = {
           ...newShopData,
           productIds: newShopData.productIds || [],
           groupBuyIds: newShopData.groupBuyIds || [],
         };
 
-        // Check if a shop with the same tiktokUsername and storeName exists
         const shopExistsQuery = await shopsCollection
           .where("tiktokUsername", "==", newShop.tiktokUsername)
           .where("storeName", "==", newShop.storeName)
@@ -81,7 +77,6 @@ export default async function handler(
           return;
         }
 
-        // Add the new shop to the database
         const docRef = await shopsCollection.add(newShop);
         const createdShop = { ...newShop, id: docRef.id };
         res.status(201).json(createdShop);
