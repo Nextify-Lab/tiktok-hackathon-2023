@@ -45,9 +45,9 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
   const router = useRouter();
 
   return (
-    <Box>
+    <Box minHeight="100vh">
       {/* Top Red Banner */}
-      <Flex bg="red.500" p={4} alignItems="center">
+      <Flex bg="#fe2c55" p={4} alignItems="center">
         <FontAwesomeIcon
           icon={faArrowLeft}
           width={"50px"}
@@ -67,7 +67,7 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
       </Flex>
 
       {/* Shop Details */}
-      <Flex bg="red.500" p={4} alignItems="center" color={"white"}>
+      <Flex bg="#fe2c55" p={4} alignItems="center" color={"white"}>
         <SkeletonBox isLoading={loading}>
           <Image
             src="https://down-aka-sg.img.susercontent.com/27f4669aca265448b403ae04661b6a05_tn"
@@ -80,8 +80,8 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           <Flex alignItems="center">
             <FontAwesomeIcon icon={faStar} color="yellow.400" />
             <Text ml={1}>{shop?.rating}</Text>
-            <Badge ml={2} colorScheme="green">
-              1000+ followers
+            <Badge ml={2} colorScheme="blue">
+              1232 followers
             </Badge>
           </Flex>
         </SkeletonBox>
@@ -95,71 +95,71 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           >
             Chat
           </Button>
-          <Button ml={2} colorScheme="teal" size="sm">
+          {/* <Button ml={2} colorScheme="teal" size="sm">
             Follow
-          </Button>
+          </Button> */}
         </Stack>
       </Flex>
 
       {/* Navigation Bar */}
       <Tabs variant="enclosed" isFitted>
-        <TabList>
+        <TabList fontWeight="bold">
           <Tab>Shop</Tab>
           <Tab>Products</Tab>
           <Tab>Categories</Tab>
         </TabList>
       </Tabs>
-
-      {/* Best Selling Products */}
-      {!searchText && (
+      <Flex direction="column">
+        {/* Best Selling Products */}
+        {!searchText && (
+          <Box p={4}>
+            <Text fontWeight="bold" mb={4} fontSize="lg">
+              Best Selling
+            </Text>
+            <SimpleGrid columns={2} spacing={4}>
+              {/* Display only the first 2 products as best selling for demo */}
+              {products?.slice(0, 2).map((product, index) => (
+                <StoreItemCard
+                  key={index}
+                  imageUrl={
+                    "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                  }
+                  itemName={product.productName}
+                  loading={loading}
+                  productId={product.id}
+                />
+              ))}
+            </SimpleGrid>
+          </Box>
+        )}
+        {/* All Products */}
         <Box p={4}>
-          <Text fontWeight="bold" mb={4}>
-            Best Selling
+          <Text fontWeight="bold" mb={4} fontSize="lg">
+            All Products
           </Text>
           <SimpleGrid columns={2} spacing={4}>
-            {/* Display only the first 2 products as best selling for demo */}
-            {products?.slice(0, 2).map((product, index) => (
-              <StoreItemCard
-                key={index}
-                imageUrl={
-                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
-                }
-                itemName={product.productName}
-                loading={loading}
-                productId={product.id}
-              />
-            ))}
+            {products
+              ?.filter(
+                (product: Product) =>
+                  !searchText ||
+                  product.productName
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
+              )
+              .map((product: Product, index: number) => (
+                <StoreItemCard
+                  key={index}
+                  imageUrl={
+                    "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                  }
+                  itemName={product.productName}
+                  loading={loading}
+                  productId={product.id}
+                />
+              ))}
           </SimpleGrid>
         </Box>
-      )}
-
-      {/* All Products */}
-      <Box p={4}>
-        <Text fontWeight="bold" mb={4}>
-          All Products
-        </Text>
-        <SimpleGrid columns={2} spacing={4}>
-          {products
-            ?.filter(
-              (product: Product) =>
-                !searchText ||
-                product.productName
-                  .toLowerCase()
-                  .includes(searchText.toLowerCase())
-            )
-            .map((product: Product, index: number) => (
-              <StoreItemCard
-                key={index}
-                imageUrl={
-                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
-                }
-                itemName={product.productName}
-                loading={loading}
-                productId={product.id}
-              />
-            ))}
-        </SimpleGrid>
-      </Box>
+      </Flex>
     </Box>
   );
 };
