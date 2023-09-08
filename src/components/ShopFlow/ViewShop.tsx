@@ -40,6 +40,7 @@ interface ViewShopProps {
 const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
   const [shop, setShop] = useState<Shop | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchText, setSearchText] = useState("");
 
   const router = useRouter();
 
@@ -84,7 +85,10 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           <InputLeftElement pointerEvents="none">
             <FontAwesomeIcon icon={faSearch} color="gray.500" />
           </InputLeftElement>
-          <Input placeholder="Search shop" />
+          <Input
+            placeholder="Search shop"
+            onChange={(e) => setSearchText(e.target.value)}
+          />
         </InputGroup>
       </Flex>
 
@@ -133,23 +137,25 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
       </Tabs>
 
       {/* Best Selling Products */}
-      <Box p={4}>
-        <Text fontWeight="bold" mb={4}>
-          Best Selling
-        </Text>
-        <SimpleGrid columns={2} spacing={4}>
-          {/* Display only the first 2 products as best selling for demo */}
-          {products.slice(0, 2).map((product) => (
-            <StoreItemCard
-              key={product.id}
-              imageUrl={product.imageUrl}
-              itemName={product.name}
-              loading={loading}
-              productId={product.id}
-            />
-          ))}
-        </SimpleGrid>
-      </Box>
+      {!searchText && (
+        <Box p={4}>
+          <Text fontWeight="bold" mb={4}>
+            Best Selling
+          </Text>
+          <SimpleGrid columns={2} spacing={4}>
+            {/* Display only the first 2 products as best selling for demo */}
+            {products.slice(0, 2).map((product) => (
+              <StoreItemCard
+                key={product.id}
+                imageUrl={product.imageUrl}
+                itemName={product.name}
+                loading={loading}
+                productId={product.id}
+              />
+            ))}
+          </SimpleGrid>
+        </Box>
+      )}
 
       {/* All Products */}
       <Box p={4}>
@@ -157,15 +163,21 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           All Products
         </Text>
         <SimpleGrid columns={2} spacing={4}>
-          {products.slice(2).map((product) => (
-            <StoreItemCard
-              key={product.id}
-              imageUrl={product.imageUrl}
-              itemName={product.name}
-              loading={loading}
-              productId={product.id}
-            />
-          ))}
+          {products
+            .filter(
+              (product) =>
+                !searchText ||
+                product.name.toLowerCase().includes(searchText.toLowerCase())
+            )
+            .map((product) => (
+              <StoreItemCard
+                key={product.id}
+                imageUrl={product.imageUrl}
+                itemName={product.name}
+                loading={loading}
+                productId={product.id}
+              />
+            ))}
         </SimpleGrid>
       </Box>
     </Box>

@@ -20,6 +20,7 @@ import QRCodeButton from "../GroupBuyFlow/QRCodeButton";
 import ShareButton from "../GroupBuyFlow/ShareButton";
 import SkeletonBox from "../SkeletonBox";
 import { FOOD_ITEM_IMAGE_URL } from "../VideoCard";
+import Link from "next/link";
 
 interface ViewItemProps {
   groupbuyId?: string;
@@ -101,9 +102,11 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
           onClick={() => router.back()}
         />
         <Spacer />
-        <Text color="white" fontSize="2xl" ml="4">
-          TikTok Shop
-        </Text>
+        <Link href={"/"}>
+          <Text color="white" fontSize="2xl" ml="4">
+            TikTok Shop
+          </Text>
+        </Link>
         <Spacer />
       </Flex>
       <SkeletonBox
