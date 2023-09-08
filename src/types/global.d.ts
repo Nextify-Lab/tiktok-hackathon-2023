@@ -54,56 +54,36 @@ class Product {
   description: string;
   stock: number;
   productName: string;
-  itemSerialNumbers: string[];
 
   constructor(
     shopId: string,
     price: number,
     description: string,
     stock: number,
-    productName: string,
-    itemSerialNumbers: string[]
+    productName: string
   ) {
     this.shopId = shopId;
     this.price = Math.abs(price);
     this.description = description;
     this.stock = stock;
     this.productName = productName.trim();
-    this.itemSerialNumbers = itemSerialNumbers;
   }
 }
 
-class Item {
-  productId: string;
-  productName: string;
-  shopId: string;
-  buyerID: string | null;
-  price: number;
-  description: string;
-  deleted: boolean;
+class Transaction {
+  buyerId: string;
+  itemIds: string[];
 
-  constructor(
-    productId: string,
-    productName: string,
-    shopId: string,
-    buyerID: string | null,
-    price: number,
-    description: string,
-    deleted: boolean = false
-  ) {
-    this.productId = productId;
-    this.productName = productName.trim();
-    this.shopId = shopId;
-    this.buyerID = buyerID;
-    this.price = Math.abs(price);
-    this.description = description;
-    this.deleted = deleted;
+  constructor(buyerId: string, itemIds: string[]) {
+    this.buyerId = buyerId;
+    this.itemIds = itemIds;
   }
 }
 
 class GroupBuy {
   id: string;
   buyers: Buyer[];
+  itemIds: string[];
   shop: Shop;
   messages?: Message[]; // Optional
 
@@ -116,12 +96,20 @@ class GroupBuy {
 }
 
 class Message {
+  id: string;
   time: Date;
   sender: string;
   receiver: string;
   msgStr: string;
 
-  constructor(time: Date, sender: string, receiver: string, msgStr: string) {
+  constructor(
+    id: string,
+    time: Date,
+    sender: string,
+    receiver: string,
+    msgStr: string
+  ) {
+    this.id = id;
     this.time = time;
     this.sender = sender.trim(); // Sanitize the sender by removing leading/trailing whitespaces
     this.receiver = receiver.trim(); // Sanitize the receiver by removing leading/trailing whitespaces

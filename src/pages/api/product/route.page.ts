@@ -3,35 +3,6 @@ import { db } from "../../../firebase/admin";
 
 const productsCollection = db.collection("products");
 const shopsCollection = db.collection("shops");
-const itemsCollection = db.collection("items");
-
-// Function to create multiple items with optional buyerID and return their doc IDs
-async function createItems(
-  shopId: string,
-  productId: string, // Include productId as an input
-  stock: number,
-  price: number,
-  description: string,
-  productName: string
-): Promise<string[]> {
-  const itemSerialNumbers: string[] = [];
-
-  for (let i = 0; i < stock; i++) {
-    const itemRef = await itemsCollection.add({
-      shopId,
-      productId, // Store the productId in each item
-      price: price,
-      description: description,
-      buyerID: null,
-      deleted: false,
-      productName: productName,
-    });
-
-    itemSerialNumbers.push(itemRef.id);
-  }
-
-  return itemSerialNumbers;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -91,7 +62,7 @@ export default async function handler(
           return;
         }
 
-        // Create the product in the productsCollection with the stock value
+        // Create the product in the productsCollection
         const productRef = await productsCollection.add({
           shopId,
           price,
@@ -101,19 +72,6 @@ export default async function handler(
           deleted: false,
         });
 
-        // Create the specified number of items and get their doc IDs
-        const itemSerialNumbers = await createItems(
-          shopId,
-          productRef.id, // Pass the product ID
-          stock,
-          price,
-          description,
-          productName
-        );
-
-        // Update the product with itemSerialNumbers
-        await productRef.update({ itemSerialNumbers });
-
         // Add the product ID to the shop's productIds array
         const shopDoc = await shopExistsDoc.ref.get();
         const currentProductIds = shopDoc.get("productIds") || [];
@@ -121,9 +79,14 @@ export default async function handler(
 
         await shopDoc.ref.update({ productIds: currentProductIds });
 
-        res
-          .status(201)
-          .json({ id: productRef.id, ...req.body, itemSerialNumbers });
+        res.status(201).json({
+          id: productRef.id,
+          shopId,
+          price,
+          description,
+          stock,
+          productName,
+        });
       } catch (error: any) {
         res.status(500).json({ error: error.toString() });
       }
