@@ -19,8 +19,6 @@ import {
   Tabs,
   Stack,
 } from "@chakra-ui/react";
-import { products } from "../../../public/data";
-import { Product } from "../../../public/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -31,6 +29,7 @@ import {
 import SkeletonBox from "../SkeletonBox";
 import { useRouter } from "next/router";
 import StoreItemCard from "./StoreItemCard";
+import useShop from "@/hooks/useShop";
 
 interface ViewShopProps {
   shopId: string;
@@ -38,37 +37,12 @@ interface ViewShopProps {
 }
 
 const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
-  const [shop, setShop] = useState<Shop | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { shop, loading } = useShop(shopId, true); // Use the custom hook
+  console.log(shop);
+  const products = shop?.products;
+  console.log(products);
   const [searchText, setSearchText] = useState("");
-
   const router = useRouter();
-
-  const fetchShop = async () => {
-    try {
-      setLoading(true);
-
-      const res = await fetch(`/api/shop/${shopId}`);
-      const data = await res.json();
-      setShop(data);
-      console.log(shop);
-      setLoading(false);
-
-      if (data.error) {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      console.error("Error in ViewShop", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchShop();
-
-    return () => {
-      setShop(undefined);
-    };
-  }, [shopId]);
 
   return (
     <Box>
@@ -144,11 +118,13 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           </Text>
           <SimpleGrid columns={2} spacing={4}>
             {/* Display only the first 2 products as best selling for demo */}
-            {products.slice(0, 2).map((product) => (
+            {products?.slice(0, 2).map((product, index) => (
               <StoreItemCard
-                key={product.id}
-                imageUrl={product.imageUrl}
-                itemName={product.name}
+                key={index}
+                imageUrl={
+                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                }
+                itemName={product.productName}
                 loading={loading}
                 productId={product.id}
               />
@@ -164,16 +140,20 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
         </Text>
         <SimpleGrid columns={2} spacing={4}>
           {products
-            .filter(
-              (product) =>
+            ?.filter(
+              (product: Product) =>
                 !searchText ||
-                product.name.toLowerCase().includes(searchText.toLowerCase())
+                product.productName
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
             )
-            .map((product) => (
+            .map((product: Product, index: number) => (
               <StoreItemCard
-                key={product.id}
-                imageUrl={product.imageUrl}
-                itemName={product.name}
+                key={index}
+                imageUrl={
+                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                }
+                itemName={product.productName}
                 loading={loading}
                 productId={product.id}
               />
