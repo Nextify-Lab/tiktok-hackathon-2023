@@ -9,11 +9,16 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./BottomNavbar.module.css";
+import { useRouter } from "next/router";
+import { useUser } from "./userContext";
 
 function BottomNavbar() {
+  const { userId, setUserId } = useUser();
+
+  const router = useRouter();
   return (
     <div className={styles["bottom-navbar"]}>
-      <div className={styles["nav-item"]}>
+      <div className={styles["nav-item"]} onClick={() => router.push(`/`)}>
         <FontAwesomeIcon
           icon={faHouse}
           className={`${styles.icon} ${styles.active}`}
@@ -36,7 +41,10 @@ function BottomNavbar() {
         <FontAwesomeIcon icon={faInbox} className={styles.icon} />
         <span className={styles["item-name"]}>Inbox</span>
       </div>
-      <div className={styles["nav-item"]}>
+      <div
+        className={styles["nav-item"]}
+        onClick={() => router.push(`/user/${userId}`)}
+      >
         <FontAwesomeIcon icon={faUser} className={styles.icon} />
         <span className={styles["item-name"]}>Profile</span>
       </div>

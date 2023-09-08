@@ -11,7 +11,7 @@ export const videoUrls: Video[] = [
     comments: 13,
     saves: 23,
     shares: 1,
-    productId: "54U1mEl8nea8utAWHX75"
+    productId: "PioRDYjqSPYnqLB2ZRPQ"
   },
   // {
   //   url: "/videos/video2.mp4",
