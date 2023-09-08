@@ -1,10 +1,15 @@
 import React from "react";
 import { Flex, Box, Button } from "@chakra-ui/react";
+import { on } from "events";
 
 interface FooterPriceProps {
   productPrice: number;
+  onPayment: () => void;
 }
-const FooterPrice: React.FC<FooterPriceProps> = ({ productPrice }) => {
+const FooterPrice: React.FC<FooterPriceProps> = ({
+  productPrice,
+  onPayment,
+}) => {
   return (
     <Flex
       position="sticky"
@@ -23,7 +28,7 @@ const FooterPrice: React.FC<FooterPriceProps> = ({ productPrice }) => {
       <Button
         mt={2}
         onClick={() => {
-          // Your onClick logic here
+          onPayment();
         }}
       >
         Place order

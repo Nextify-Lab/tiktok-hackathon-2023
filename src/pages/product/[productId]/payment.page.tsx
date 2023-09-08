@@ -16,6 +16,7 @@ const Payment = () => {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [stock, setStock] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState(undefined);
   const shippingPrice = 1;
 
   const shopId = product?.shopId;
@@ -75,6 +76,10 @@ const Payment = () => {
     return <Spinner />;
   }
 
+  function handlePayment(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <SkeletonBox isLoading={loading}>
       <Header />
@@ -93,7 +98,7 @@ const Payment = () => {
         shippingPrice={shippingPrice}
       />
       <PaymentMethod />
-      <FooterPrice productPrice={product?.price!} />
+      <FooterPrice productPrice={product?.price!} onPayment={handlePayment} />
     </SkeletonBox>
   );
 };
