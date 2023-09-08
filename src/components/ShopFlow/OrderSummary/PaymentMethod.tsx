@@ -18,7 +18,7 @@ const PaymentMethod = () => {
   const groupProps = getRootProps();
 
   return (
-    <Box p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" mb={4}>
+    <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First Row */}
       <Flex justifyContent="space-between" mb={3}>
         <Text>Payment method</Text>

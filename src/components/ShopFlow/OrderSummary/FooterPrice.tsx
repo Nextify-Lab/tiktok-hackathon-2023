@@ -6,7 +6,7 @@ const FooterPrice = () => {
 
   return (
     <Flex
-      position="fixed"
+      position="sticky"
       bottom="0"
       left="0"
       right="0"
