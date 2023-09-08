@@ -21,7 +21,9 @@ const PaymentMethod = () => {
     <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First Row */}
       <Flex justifyContent="space-between" mb={3}>
-        <Text>Payment method</Text>
+        <Text fontSize="xl" fontWeight="bold">
+          Payment method
+        </Text>
         <Flex alignItems="center" color="gray.500">
           <Text>View all</Text>
           <FaChevronRight size="1.25em" /> {/* Changed Icon */}
