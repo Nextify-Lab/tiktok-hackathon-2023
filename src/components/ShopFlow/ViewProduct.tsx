@@ -91,7 +91,7 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
   };
 
   return (
-    <Box>
+    <Flex minHeight="100vh" flexDirection={"column"}>
       {/* Top Red Banner */}
       <Flex bg="red.500" p={4} alignItems="center">
         <FontAwesomeIcon
@@ -108,12 +108,13 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
           </Text>
         </Link>
         <Spacer />
-      </Flex>
+      </Flex>{" "}
       <SkeletonBox
         isLoading={loading}
-        borderWidth="1px"
+        // borderWidth="1px"
         borderRadius="lg"
         padding="5"
+        borderWidth="0"
       >
         <Image
           src={FOOD_ITEM_IMAGE_URL}
@@ -127,6 +128,7 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
         <Text color="green.500" fontSize="lg" fontWeight="semibold">
           ${product?.price}
         </Text>
+        <Box flex="1" bg="white" />
         <Stack
           direction="row"
           spacing={4}
@@ -148,26 +150,26 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
           />
         </Stack>
         {product?.description && <Text mt="4">{product?.description}</Text>}
-        <Stack direction="row" spacing={4} mt="6">
-          <Button
-            colorScheme="teal"
-            variant="solid"
-            flex="1"
-            onClick={() => handleVisitShop()}
-          >
-            Visit Shop
-          </Button>
-          <Button
-            colorScheme="red"
-            variant="solid"
-            flex="1"
-            onClick={() => handleStartPayment()}
-          >
-            Buy Now
-          </Button>
-        </Stack>
       </SkeletonBox>
-    </Box>
+      <Stack direction="row" spacing={4} mt="auto" mb="10" mx="5">
+        <Button
+          colorScheme="teal"
+          variant="solid"
+          flex="1"
+          onClick={() => handleVisitShop()}
+        >
+          Visit Shop
+        </Button>
+        <Button
+          colorScheme="red"
+          variant="solid"
+          flex="1"
+          onClick={() => handleStartPayment()}
+        >
+          Buy Now
+        </Button>
+      </Stack>
+    </Flex>
   );
 };
 
