@@ -1,6 +1,6 @@
 // pages/product/[productId].tsx
 
-import ViewItem from "@/components/ShopFlow/ViewItem";
+import ViewItem from "@/components/ShopFlow/ViewProduct";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 

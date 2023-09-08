@@ -9,8 +9,9 @@ import FooterLeft from "../components/FooterLeft";
 import FooterRight from "../components/FooterRight";
 import styles from "./VideoCard.module.css";
 import GroupBuyPopup from "./ShopFlow/GroupBuyPopup";
-import ViewItem from "./ShopFlow/ViewItem";
+import ViewItem from "./ShopFlow/ViewProduct";
 import { useRouter } from "next/router";
+import { Skeleton } from "@chakra-ui/react";
 
 interface VideoCardProps {
   url: string;
@@ -56,6 +57,30 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState<Product | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/product/${productId}`);
+        const data = await res.json();
+        setProduct(data);
+        setLoading(false);
+        console.log("[productId].page.tsx set item as ", data);
+      } catch (error) {
+        console.error("Error in [productId].page.tsx", error);
+      }
+    };
+
+    fetchProduct();
+
+    return () => {
+      setProduct(undefined);
+    };
+  }, [productId]);
 
   const handleGroupBuyPopupClick = () => {
     console.log("group buy popup clicked", productId);
@@ -105,12 +130,15 @@ const VideoCard: React.FC<VideoCardProps> = ({
       />
       <div className={styles["bottom-controls"]}>
         <div className={styles["footer-left"]}>
-          <FooterLeft
-            username={username}
-            description={description}
-            song={song}
-            handleFeaturedItemClick={() => handleFeaturedItemClick()}
-          />
+          <Skeleton isLoaded={typeof product?.productName === typeof "string"}>
+            <FooterLeft
+              username={username}
+              description={description}
+              song={song}
+              itemName={product?.productName!}
+              handleFeaturedItemClick={() => handleFeaturedItemClick()}
+            />
+          </Skeleton>
         </div>
         <div className={styles["footer-right"]}>
           <FooterRight
