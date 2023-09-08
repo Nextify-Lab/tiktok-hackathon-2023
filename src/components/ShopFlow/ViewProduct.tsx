@@ -1,4 +1,4 @@
-// ViewItem.tsx
+// ViewProduct.tsx
 import {
   Box,
   Image,
@@ -20,39 +20,40 @@ import QRCodeButton from "../GroupBuyFlow/QRCodeButton";
 import ShareButton from "../GroupBuyFlow/ShareButton";
 import SkeletonBox from "../SkeletonBox";
 import { FOOD_ITEM_IMAGE_URL } from "../VideoCard";
+import Link from "next/link";
 
-interface ViewItemProps {
+interface ViewProductProps {
   groupbuyId?: string;
   productId: string;
 }
 
-const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
+const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
   const [sheetTitle, setSheetTitle] = useState("");
   const [sheetDesc, setSheetDesc] = useState<"qr" | "share">("qr");
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [item, setItem] = useState<Item | undefined>(undefined);
+  const [product, setProduct] = useState<Product | undefined>(undefined);
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchItem = async () => {
+    const fetchProduct = async () => {
       try {
         setLoading(true);
         const res = await fetch(`/api/product/${productId}`);
         const data = await res.json();
-        setItem(data);
+        setProduct(data);
         setLoading(false);
-        console.log("[productId].page.tsx set item as ", data);
+        console.log("[productId].page.tsx set product as ", data);
       } catch (error) {
         console.error("Error in [productId].page.tsx", error);
       }
     };
 
-    fetchItem();
+    fetchProduct();
 
     return () => {
-      setItem(undefined);
+      setProduct(undefined);
     };
   }, [productId]);
 
@@ -82,7 +83,7 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
   };
 
   const handleVisitShop = () => {
-    router.push(`/shop/${item?.shopId}`);
+    router.push(`/shop/${product?.shopId}`);
   };
 
   const handleStartPayment = () => {
@@ -101,9 +102,11 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
           onClick={() => router.back()}
         />
         <Spacer />
-        <Text color="white" fontSize="2xl" ml="4">
-          TikTok Shop
-        </Text>
+        <Link href={"/"}>
+          <Text color="white" fontSize="2xl" ml="4">
+            TikTok Shop
+          </Text>
+        </Link>
         <Spacer />
       </Flex>
       <SkeletonBox
@@ -114,15 +117,15 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
       >
         <Image
           src={FOOD_ITEM_IMAGE_URL}
-          alt={item?.productName}
+          alt={product?.productName}
           borderRadius="md"
         />
         <Text fontWeight="bold" fontSize="xl" mt="4">
-          {item?.productName}{" "}
+          {product?.productName}{" "}
           {groupbuyId && <span>(Groupbuy Id: {groupbuyId})</span>}
         </Text>
         <Text color="green.500" fontSize="lg" fontWeight="semibold">
-          ${item?.price}
+          ${product?.price}
         </Text>
         <Stack
           direction="row"
@@ -144,7 +147,7 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
             currentUrl={currentUrl}
           />
         </Stack>
-        {item?.description && <Text mt="4">{item?.description}</Text>}
+        {product?.description && <Text mt="4">{product?.description}</Text>}
         <Stack direction="row" spacing={4} mt="6">
           <Button
             colorScheme="teal"
@@ -168,4 +171,4 @@ const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
   );
 };
 
-export default ViewItem;
+export default ViewProduct;

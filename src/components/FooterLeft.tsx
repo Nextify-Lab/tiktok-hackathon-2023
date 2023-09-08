@@ -8,6 +8,7 @@ interface FooterLeftProps {
   username: string;
   description: string;
   song: string;
+  itemName: string;
   handleFeaturedItemClick: () => void;
 }
 
@@ -15,12 +16,13 @@ const FooterLeft: React.FC<FooterLeftProps> = ({
   username,
   description,
   song,
+  itemName,
   handleFeaturedItemClick,
 }) => {
   return (
     <div className={styles.footerContainer}>
       <FeaturedItemPopup
-        itemName={"Hardcoded "}
+        itemName={itemName}
         handleFeaturedItemClick={handleFeaturedItemClick}
       />
       <div className={styles.footerLeft}>

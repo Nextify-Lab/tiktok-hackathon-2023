@@ -41,6 +41,7 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
   console.log(shop);
   const products = shop?.products;
   console.log(products);
+  const [searchText, setSearchText] = useState("");
   const router = useRouter();
 
   return (
@@ -58,7 +59,10 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           <InputLeftElement pointerEvents="none">
             <FontAwesomeIcon icon={faSearch} color="gray.500" />
           </InputLeftElement>
-          <Input placeholder="Search shop" />
+          <Input
+            placeholder="Search shop"
+            onChange={(e) => setSearchText(e.target.value)}
+          />
         </InputGroup>
       </Flex>
 
@@ -107,25 +111,27 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
       </Tabs>
 
       {/* Best Selling Products */}
-      <Box p={4}>
-        <Text fontWeight="bold" mb={4}>
-          Best Selling
-        </Text>
-        <SimpleGrid columns={2} spacing={4}>
-          {/* Display only the first 2 products as best selling for demo */}
-          {products?.slice(0, 2).map((product, index) => (
-            <StoreItemCard
-              key={index}
-              imageUrl={
-                "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
-              }
-              itemName={product.productName}
-              loading={loading}
-              productId={product.id}
-            />
-          ))}
-        </SimpleGrid>
-      </Box>
+      {!searchText && (
+        <Box p={4}>
+          <Text fontWeight="bold" mb={4}>
+            Best Selling
+          </Text>
+          <SimpleGrid columns={2} spacing={4}>
+            {/* Display only the first 2 products as best selling for demo */}
+            {products?.slice(0, 2).map((product, index) => (
+              <StoreItemCard
+                key={index}
+                imageUrl={
+                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                }
+                itemName={product.productName}
+                loading={loading}
+                productId={product.id}
+              />
+            ))}
+          </SimpleGrid>
+        </Box>
+      )}
 
       {/* All Products */}
       <Box p={4}>
@@ -133,17 +139,25 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
           All Products
         </Text>
         <SimpleGrid columns={2} spacing={4}>
-          {products?.map((product, index) => (
-            <StoreItemCard
-              key={index}
-              imageUrl={
-                "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
-              }
-              itemName={product.productName}
-              loading={loading}
-              productId={product.id}
-            />
-          ))}
+          {products
+            ?.filter(
+              (product: Product) =>
+                !searchText ||
+                product.productName
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
+            )
+            .map((product: Product, index: number) => (
+              <StoreItemCard
+                key={index}
+                imageUrl={
+                  "https://down-sg.img.susercontent.com/file/65f4739a073c03e90c7adc0765ae9aa1"
+                }
+                itemName={product.productName}
+                loading={loading}
+                productId={product.id}
+              />
+            ))}
         </SimpleGrid>
       </Box>
     </Box>
