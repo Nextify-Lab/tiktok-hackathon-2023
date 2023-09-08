@@ -91,12 +91,13 @@ export default async function handler(
           return;
         }
 
-        // Create the product in the productsCollection
+        // Create the product in the productsCollection with the stock value
         const productRef = await productsCollection.add({
           shopId,
           price,
           description,
           productName,
+          stock, // Include stock value
           deleted: false,
         });
 
