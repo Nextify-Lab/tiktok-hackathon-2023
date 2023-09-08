@@ -19,30 +19,42 @@ import BottomSheetGroupBuyModifiedChild from "../GroupBuyFlow/BottomSheetGroupBu
 import QRCodeButton from "../GroupBuyFlow/QRCodeButton";
 import ShareButton from "../GroupBuyFlow/ShareButton";
 import SkeletonBox from "../SkeletonBox";
+import { FOOD_ITEM_IMAGE_URL } from "../VideoCard";
 
 interface ViewItemProps {
-  imageUrl: string;
-  title: string;
-  price: string;
-  description?: string;
   groupbuyId?: string;
-  itemId: string;
+  productId: string;
 }
 
-const ViewItem: React.FC<ViewItemProps> = ({
-  imageUrl,
-  title,
-  price,
-  description,
-  groupbuyId,
-  itemId,
-}) => {
+const ViewItem: React.FC<ViewItemProps> = ({ groupbuyId, productId }) => {
   const [sheetTitle, setSheetTitle] = useState("");
   const [sheetDesc, setSheetDesc] = useState<"qr" | "share">("qr");
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [item, setItem] = useState<Item | undefined>(undefined);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/product/${productId}`);
+        const data = await res.json();
+        setItem(data);
+        setLoading(false);
+        console.log("[productId].page.tsx set item as ", data);
+      } catch (error) {
+        console.error("Error in [productId].page.tsx", error);
+      }
+    };
+
+    fetchItem();
+
+    return () => {
+      setItem(undefined);
+    };
+  }, [productId]);
 
   const [currentUrl, setCurrentUrl] = useState<string>("");
   // const currentUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`;
@@ -70,11 +82,11 @@ const ViewItem: React.FC<ViewItemProps> = ({
   };
 
   const handleVisitShop = () => {
-    router.push("/shop/someid");
+    router.push(`/shop/${item?.shopId}`);
   };
 
   const handleStartPayment = () => {
-    router.push(`/item/${itemId}/payment`);
+    router.push(`/product/${productId}/payment`);
   };
 
   return (
@@ -99,14 +111,18 @@ const ViewItem: React.FC<ViewItemProps> = ({
         borderWidth="1px"
         borderRadius="lg"
         padding="5"
-        maxWidth="400px"
       >
-        <Image src={imageUrl} alt={title} borderRadius="md" />
+        <Image
+          src={FOOD_ITEM_IMAGE_URL}
+          alt={item?.productName}
+          borderRadius="md"
+        />
         <Text fontWeight="bold" fontSize="xl" mt="4">
-          {title} {groupbuyId && <span>(Groupbuy Id: {groupbuyId})</span>}
+          {item?.productName}{" "}
+          {groupbuyId && <span>(Groupbuy Id: {groupbuyId})</span>}
         </Text>
         <Text color="green.500" fontSize="lg" fontWeight="semibold">
-          ${price}
+          ${item?.price}
         </Text>
         <Stack
           direction="row"
@@ -128,7 +144,7 @@ const ViewItem: React.FC<ViewItemProps> = ({
             currentUrl={currentUrl}
           />
         </Stack>
-        {description && <Text mt="4">{description}</Text>}
+        {item?.description && <Text mt="4">{item?.description}</Text>}
         <Stack direction="row" spacing={4} mt="6">
           <Button
             colorScheme="teal"

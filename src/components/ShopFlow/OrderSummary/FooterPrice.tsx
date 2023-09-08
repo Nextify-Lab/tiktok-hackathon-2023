@@ -1,9 +1,10 @@
 import React from "react";
 import { Flex, Box, Button } from "@chakra-ui/react";
 
-const FooterPrice = () => {
-  const money = 100; // Just a placeholder value, you can determine this later
-
+interface FooterPriceProps {
+  productPrice: number;
+}
+const FooterPrice: React.FC<FooterPriceProps> = ({ productPrice }) => {
   return (
     <Flex
       position="fixed"
@@ -17,7 +18,7 @@ const FooterPrice = () => {
     >
       <Flex justifyContent="space-between" fontWeight={"bold"}>
         <Box>Total</Box>
-        <Box>S${money}</Box>
+        <Box>S${productPrice}</Box>
       </Flex>
       <Button
         mt={2}

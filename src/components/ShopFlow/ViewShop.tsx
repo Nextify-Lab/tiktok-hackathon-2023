@@ -43,24 +43,25 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchShop = async () => {
-      try {
-        setLoading(true);
+  const fetchShop = async () => {
+    try {
+      setLoading(true);
 
-        const res = await fetch(`/api/shop/${shopId}`);
-        const data = await res.json();
-        setShop(data);
-        console.log(shop);
-        setLoading(false);
+      const res = await fetch(`/api/shop/${shopId}`);
+      const data = await res.json();
+      setShop(data);
+      console.log(shop);
+      setLoading(false);
 
-        if (data.error) {
-          throw new Error(data.message);
-        }
-      } catch (error) {
-        console.error("Error in ViewShop", error);
+      if (data.error) {
+        throw new Error(data.message);
       }
-    };
+    } catch (error) {
+      console.error("Error in ViewShop", error);
+    }
+  };
+
+  useEffect(() => {
     fetchShop();
 
     return () => {
@@ -144,7 +145,7 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
               imageUrl={product.imageUrl}
               itemName={product.name}
               loading={loading}
-              itemId={product.id}
+              productId={product.id}
             />
           ))}
         </SimpleGrid>
@@ -162,7 +163,7 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
               imageUrl={product.imageUrl}
               itemName={product.name}
               loading={loading}
-              itemId={product.id}
+              productId={product.id}
             />
           ))}
         </SimpleGrid>

@@ -1,11 +1,7 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 
 import React, { useEffect, useState, useRef } from "react";
-import styles from "@/pages/index.module.css";
 import VideoCard from "../components/VideoCard";
-import BottomNavbar from "../components/BottomNavbar";
-import TopNavbar from "../components/TopNavbar";
 import { videoUrls } from "@/../public/videoUrls";
 import Layout from "@/components/Layout";
 
@@ -77,6 +73,7 @@ export default function ForYouPage() {
           profilePic={video.profilePic}
           setVideoRef={handleVideoRef(index)}
           autoplay={index === 0}
+          productId={video.productId}
         />
       ))}
     </Layout>

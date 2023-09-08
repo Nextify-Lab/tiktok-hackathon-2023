@@ -14,7 +14,10 @@ const FeaturedItemPopup: React.FC<FeaturedItemPopupProps> = ({
   handleFeaturedItemClick,
 }) => {
   return (
-    <div onClick={() => handleFeaturedItemClick()}>
+    <div
+      onClick={() => handleFeaturedItemClick()}
+      style={{ cursor: "pointer" }}
+    >
       <ClosableBox closable={false}>
         <Stack direction={"row"}>
           <FontAwesomeIcon

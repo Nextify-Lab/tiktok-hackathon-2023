@@ -1,12 +1,22 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
 
-const OrderSummary = () => {
+interface OrderSummaryProps {
+  productPrice: number;
+  shippingPrice: number;
+}
+const OrderSummary: React.FC<OrderSummaryProps> = ({
+  productPrice,
+  shippingPrice,
+}) => {
   // Mocked values for now
-  const subtotal = 100; // replace with the actual value later
-  const shipping = 10; // replace with the actual value later
+  const subtotal = productPrice; // replace with the actual value later
+  const shipping = shippingPrice; // replace with the actual value later
   const total = subtotal + shipping;
 
+  if (!total) {
+    return <Spinner />;
+  }
   return (
     <Box p={4} boxShadow="md" borderWidth="1px" mb={4}>
       {/* First Row */}

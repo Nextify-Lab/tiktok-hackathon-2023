@@ -24,8 +24,8 @@ class Shop {
   id: string;
   storeName: string;
   tiktokUsername: string;
-  groupBuys: GroupBuy[];
-  items: Item[];
+  groupBuyIds: string[];
+  productIds: string[];
   rating: number;
   deleted: boolean;
 
@@ -33,46 +33,71 @@ class Shop {
     id: string,
     storeName: string,
     tiktokUsername: string,
-    groupBuys: GroupBuy[],
-    items: Item[],
+    groupBuyIds: string[],
+    productIds: string[],
     rating: number,
     deleted: boolean
   ) {
     this.id = id;
     this.storeName = storeName.trim();
     this.tiktokUsername = tiktokUsername.trim();
-    this.groupBuys = groupBuys;
-    this.items = items;
+    this.groupBuyIds = groupBuyIds;
+    this.productIds = productIds;
     this.rating = rating;
     this.deleted = deleted;
+  }
+}
+
+class Product {
+  shopId: string;
+  price: number;
+  description: string;
+  stock: number;
+  productName: string;
+  itemSerialNumbers: string[];
+
+  constructor(
+    shopId: string,
+    price: number,
+    description: string,
+    stock: number,
+    productName: string,
+    itemSerialNumbers: string[]
+  ) {
+    this.shopId = shopId;
+    this.price = Math.abs(price);
+    this.description = description;
+    this.stock = stock;
+    this.productName = productName.trim();
+    this.itemSerialNumbers = itemSerialNumbers;
   }
 }
 
 class Item {
   productId: string;
   productName: string;
-  shop: Shop;
-  buyer: Buyer;
-  stock: number;
+  shopId: string;
+  buyerID: string | null;
   price: number;
   description: string;
+  deleted: boolean;
 
   constructor(
     productId: string,
     productName: string,
-    shop: Shop,
-    buyer: Buyer,
-    stock: number,
+    shopId: string,
+    buyerID: string | null,
     price: number,
-    description: string
+    description: string,
+    deleted: boolean = false
   ) {
     this.productId = productId;
-    this.productName = productName.trim(); // Sanitize the productName by removing leading/trailing whitespaces
-    this.shop = shop;
-    this.buyer = buyer;
-    this.stock = Math.abs(stock); // Ensure stock is a positive value
-    this.price = Math.abs(price); // Ensure price is a positive value
+    this.productName = productName.trim();
+    this.shopId = shopId;
+    this.buyerID = buyerID;
+    this.price = Math.abs(price);
     this.description = description;
+    this.deleted = deleted;
   }
 }
 
@@ -121,4 +146,5 @@ interface Video {
   comments: number;
   saves: number;
   shares: number;
+  productId: string;
 }

@@ -1,4 +1,4 @@
-// pages/item/[itemId].tsx
+// pages/product/[productId].tsx
 
 import ViewItem from "@/components/ShopFlow/ViewItem";
 import {

@@ -7,25 +7,25 @@ interface StoreItemCardProps {
   imageUrl: string;
   itemName: string;
   loading: boolean;
-  itemId: string;
+  productId: string;
 }
 
 const StoreItemCard: React.FC<StoreItemCardProps> = ({
   imageUrl,
   itemName,
   loading,
-  itemId,
+  productId,
 }) => {
   const router = useRouter();
   return (
     <SkeletonBox
-      key={itemId}
+      key={productId}
       p={4}
       boxShadow="md"
       borderRadius="md"
       isLoading={loading}
       onClick={() => {
-        router.push(`/item/${itemId}`);
+        router.push(`/product/${productId}`);
       }}
     >
       <Image src={imageUrl} alt={itemName} />

@@ -69,7 +69,9 @@
   color: #fff;
   margin-right: 5px;
   margin-bottom: 60px;
-  position: relative;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
 }
 
 /* .sidebar-icon */
