@@ -93,7 +93,15 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
   return (
     <Flex minHeight="100vh" flexDirection={"column"}>
       {/* Top Red Banner */}
-      <Flex bg="red.500" p={4} alignItems="center">
+      <Flex bg="black" p={4} alignItems="center">
+        {/* <FontAwesomeIcon
+          icon={faArrowLeft}
+          width={"50px"}
+          height={"50px"}
+          color="white"
+          onClick={() => router.back()}
+        />
+        <Spacer /> */}
         <FontAwesomeIcon
           icon={faArrowLeft}
           width={"50px"}
@@ -101,14 +109,13 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
           color="white"
           onClick={() => router.back()}
         />
-        <Spacer />
         <Link href={"/"}>
-          <Text color="white" fontSize="2xl" ml="4">
+          <Text color="white" fontSize="2xl" ml="4" fontWeight="bold">
             TikTok Shop
           </Text>
         </Link>
         <Spacer />
-      </Flex>{" "}
+      </Flex>
       <SkeletonBox
         isLoading={loading}
         // borderWidth="1px"
@@ -122,24 +129,29 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
           borderRadius="md"
         />
         <Text fontWeight="bold" fontSize="xl" mt="4">
-          {product?.productName}{" "}
+          {product?.productName}
+        </Text>
+        <Text fontWeight="bold" fontSize="xl" mt="4">
           {groupbuyId && <span>(Groupbuy Id: {groupbuyId})</span>}
         </Text>
         <Text color="green.500" fontSize="lg" fontWeight="semibold">
           ${product?.price}
         </Text>
         <Box flex="1" bg="white" />
-        <Stack
+        <Flex
           direction="row"
-          spacing={4}
+          align="center"
           mt="4"
-          bg={"red.500"}
-          color={"white"}
-          align={"center"}
-          borderRadius={"md"}
+          borderRadius="md"
+          backgroundColor="#fe2c55"
+          p="3" // padding to replace the margin on Text
         >
-          <Text margin={"3"}>Groupbuy with friends </Text>
+          <Text color="white" fontWeight="bold">
+            Groupbuy with friends
+          </Text>
+          <Spacer />
           <QRCodeButton onClick={clickQRCode} />
+          <Box mx="2"></Box>
           <ShareButton onClick={clickShare} />
           <BottomSheetGroupBuyModifiedChild
             isOpen={isOpen}
@@ -148,23 +160,27 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
             desc={sheetDesc}
             currentUrl={currentUrl}
           />
-        </Stack>
+        </Flex>
         {product?.description && <Text mt="4">{product?.description}</Text>}
       </SkeletonBox>
       <Stack direction="row" spacing={4} mt="auto" mb="10" mx="5">
         <Button
-          colorScheme="teal"
           variant="solid"
           flex="1"
           onClick={() => handleVisitShop()}
+          borderColor="#fe2c55"
+          borderWidth={2}
+          textColor="#fe2c55"
+          backgroundColor={"white"}
         >
           Visit Shop
         </Button>
         <Button
-          colorScheme="red"
+          backgroundColor="#fe2c55"
           variant="solid"
           flex="1"
           onClick={() => handleStartPayment()}
+          textColor="white"
         >
           Buy Now
         </Button>
