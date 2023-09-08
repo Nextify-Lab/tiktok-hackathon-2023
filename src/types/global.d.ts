@@ -82,37 +82,14 @@ class Transaction {
 
 class GroupBuy {
   id: string;
-  buyers: Buyer[];
-  itemIds: string[];
-  shop: Shop;
-  messages?: Message[]; // Optional
+  shopId: string;
+  buyerIds: string[];
+  TransactionIds: string[];
 
-  constructor(id: string, buyers: Buyer[], shop: Shop, messages?: Message[]) {
+  constructor(id: string, buyerIds: string[], shopId: string) {
     this.id = id;
     this.buyers = buyers;
     this.shop = shop;
-    this.messages = messages;
-  }
-}
-
-class Message {
-  id: string;
-  time: Date;
-  sender: string;
-  receiver: string;
-  msgStr: string;
-
-  constructor(
-    id: string,
-    time: Date,
-    sender: string,
-    receiver: string,
-    msgStr: string
-  ) {
-    this.id = id;
-    this.time = time;
-    this.sender = sender.trim(); // Sanitize the sender by removing leading/trailing whitespaces
-    this.receiver = receiver.trim(); // Sanitize the receiver by removing leading/trailing whitespaces
-    this.msgStr = msgStr.trim(); // Sanitize the message by removing leading/trailing whitespaces
+    this.TransactionIds = [];
   }
 }
