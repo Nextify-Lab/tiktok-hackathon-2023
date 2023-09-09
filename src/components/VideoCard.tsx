@@ -60,6 +60,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
+  const [groupbuy, setGroupbuy] = useState<GroupBuy | undefined>(undefined);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,7 +70,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         const data = await res.json();
         setProduct(data);
         setLoading(false);
-        console.log("[productId].page.tsx set item as ", data);
+        console.log("[productId].page.tsx set product as ", data);
       } catch (error) {
         console.error("Error in [productId].page.tsx", error);
       }
@@ -82,6 +83,27 @@ const VideoCard: React.FC<VideoCardProps> = ({
     };
   }, [productId]);
 
+  useEffect(() => {
+    const fetchGroupbuy = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/groupBuy/route?productId=${productId}`);
+        const data = await res.json();
+        setGroupbuy(data);
+        setLoading(false);
+        console.log("[productId].page.tsx set groupbuy as ", data);
+      } catch (error) {
+        console.error("Error in [productId].page.tsx", error);
+      }
+    };
+
+    fetchGroupbuy();
+
+    return () => {
+      setGroupbuy(undefined);
+    };
+  }, [productId]);
+
   const handleGroupBuyPopupClick = () => {
     console.log("group buy popup clicked", productId);
     // todo: POST a new groupbuy
@@ -91,6 +113,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
   };
   const handleFeaturedItemClick = () => {
+    
     router.push(`/product/${productId}`);
   };
 

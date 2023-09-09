@@ -3,7 +3,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 
 interface UserContextProps {
   userId: string | null;
-  setUserId: (id: string) => void;
+  setUserId: (id: string | null) => void;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -18,8 +18,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     return null;
   });
 
-  const setUserId = (id: string) => {
-    localStorage.setItem("userId", id);
+  const setUserId = (id: string | null) => {
+    if (id === null) {
+      localStorage.removeItem("userId");
+    } else {
+      localStorage.setItem("userId", id);
+    }
     setUserIdState(id);
   };
 

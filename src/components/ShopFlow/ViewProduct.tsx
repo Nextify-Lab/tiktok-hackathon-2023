@@ -21,6 +21,7 @@ import ShareButton from "../GroupBuyFlow/ShareButton";
 import SkeletonBox from "../SkeletonBox";
 import { FOOD_ITEM_IMAGE_URL } from "../VideoCard";
 import Link from "next/link";
+import { group } from "console";
 
 interface ViewProductProps {
   groupbuyId?: string;
@@ -83,11 +84,19 @@ const ViewProduct: React.FC<ViewProductProps> = ({ groupbuyId, productId }) => {
   };
 
   const handleVisitShop = () => {
-    router.push(`/shop/${product?.shopId}`);
+    if (groupbuyId === undefined) {
+      router.push(`/shop/${product?.shopId}`);
+    } else {
+      router.push(`/shop/${product?.shopId}?groupbuyId=${groupbuyId}`);
+    }
   };
 
   const handleStartPayment = () => {
-    router.push(`/product/${productId}/payment`);
+    if (groupbuyId === undefined) {
+      router.push(`/product/${productId}/payment`);
+    } else {
+      router.push(`/product/${productId}/payment?groupbuyId=${groupbuyId}`);
+    }
   };
 
   return (
