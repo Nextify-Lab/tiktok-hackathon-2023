@@ -23,6 +23,7 @@ import {
   ModalOverlay,
   Skeleton,
 } from "@chakra-ui/react";
+import { useUser } from "./userContext";
 
 interface VideoCardProps {
   url: string;
@@ -37,6 +38,7 @@ interface VideoCardProps {
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
   productId: string;
+  geolocation: { latitude: number | string; longitude: number | string } | null;
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -65,12 +67,14 @@ const VideoCard: React.FC<VideoCardProps> = ({
   setVideoRef,
   autoplay,
   productId,
+  geolocation,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const router = useRouter();
 
   const [showPopup, setShowPopup] = useState(false);
+  const { userId, setUserId } = useUser();
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
@@ -190,26 +194,60 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   const handleConfirm = async () => {
     setShowPopup(false);
-    // Make the POST request
+
+    // 1. GET request to /api/product/<productId>
     try {
-      const res = await fetch("/api/mock", {
+      const productRes = await fetch(`/api/product/${productId}`);
+      if (!productRes.ok) throw new Error("Failed to fetch product details.");
+
+      const productData = await productRes.json();
+      const { shopId } = productData;
+      console.log("%cVideoCard.tsx line:205 shopId", "color: #007acc;", shopId);
+
+      // 2. POST request to /api/groupBuy/route
+      const groupBuyBody = {
+        shopId: shopId,
+        location: {
+          longitude: geolocation?.longitude.toString(),
+          latitude: geolocation?.latitude.toString(),
+        },
+      };
+
+      const groupBuyRes = await fetch("/api/groupBuy/route", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // Add any required body data for the POST request
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify(groupBuyBody),
       });
-      if (res.ok) {
-        const data = await res.json();
-        const groupbuyId = data.groupbuyId; // Assuming your response returns a groupbuyId
-        router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
-      } else {
-        // Handle any error response from your server
-        console.error("Failed to create groupbuy");
-      }
+
+      if (!groupBuyRes.ok) throw new Error("Failed to initiate group buy.");
+
+      const groupBuyData = await groupBuyRes.json();
+      const { id } = groupBuyData;
+
+      // 3. PUT request to api/groupBuy/<id>
+
+      const putRes = await fetch(`/api/groupBuy/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          buyerId: userId,
+          productId: productId,
+          quantity: 1,
+        }),
+      });
+
+      if (!putRes.ok) throw new Error("Failed to update group buy selection.");
+
+      const putData = await putRes.json();
+
+      // Redirect or perform other actions after all requests are successful
+      router.push(`/product/${productId}?groupbuyId=${id}`);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error in handleConfirm:", error);
     }
   };
 
@@ -228,7 +266,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
       }
     }
   };
-
+  console.log("%cVideoCard.tsx line:268 userId", "color: #007acc;", userId);
   return (
     <div className={styles.video}>
       {/* The video element */}

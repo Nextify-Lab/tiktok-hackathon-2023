@@ -91,8 +91,8 @@ class GroupBuy {
   buyerIds: string[];
   TransactionIds: string[];
   location: {
-    longitude: string;
-    latitude: string;
+    longitude: string | number;
+    latitude: string | number;
   };
 
   constructor(

@@ -73,9 +73,9 @@ export default async function handler(
 
         // Validate location
         if (
-          !location ||
-          typeof location.longitude !== "string" ||
-          typeof location.latitude !== "string"
+          !location
+          // || typeof location.longitude !== "string" ||
+          // typeof location.latitude !== "string"
         ) {
           res.status(400).json({ error: "Invalid location format" });
           return;
