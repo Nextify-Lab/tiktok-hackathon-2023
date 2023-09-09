@@ -37,7 +37,6 @@ interface VideoCardProps {
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
   productId: string;
-  geolocation: { latitude: string; longitude: string };
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -66,7 +65,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
   setVideoRef,
   autoplay,
   productId,
-  geolocation,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 

@@ -95,7 +95,6 @@ export default function ForYouPage() {
           setVideoRef={handleVideoRef(index)}
           autoplay={index === 0}
           productId={video.productId}
-          geolocation={}
         />
       ))}
     </Layout>
