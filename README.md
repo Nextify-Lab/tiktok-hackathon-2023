@@ -4,10 +4,6 @@
 ![Screenshot 2](public/showcaseImages/Screenshot%202023-09-09%20145317.png)
 ![Screenshot 3](public/showcaseImages/Screenshot%202023-09-09%20145335.png)
 ![Screenshot 4](public/showcaseImages/Screenshot%202023-09-09%20145341.png)
-![Screenshot 5](public/showcaseImages/Screenshot%202023-09-09%20145347.png)
-![Screenshot 6](public/showcaseImages/Screenshot%202023-09-09%20145353.png)
-![Screenshot 7](public/showcaseImages/Screenshot%202023-09-09%20145400.png)
-![Screenshot 8](public/showcaseImages/Screenshot%202023-09-09%20145406.png)
 
 ## Inspiration
 
