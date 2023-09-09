@@ -84,7 +84,14 @@ const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
               1232 followers
             </Badge>
           </Flex>
+
+          {groupbuyId && (
+            <SkeletonBox ml={4} isLoading={loading}>
+              <Text>Groupbuy Id: {groupbuyId}</Text>
+            </SkeletonBox>
+          )}
         </SkeletonBox>
+
         <Spacer />
         <Stack>
           <Button

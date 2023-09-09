@@ -18,7 +18,7 @@ const Payment = () => {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [stock, setStock] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(undefined);
-  const shippingPrice = 1;
+  const shippingPrice = 3;
 
   const shopId = product?.shopId;
   const [shop, setShop] = useState<Shop | undefined>(undefined);

@@ -23,8 +23,9 @@ const mockItems = [
 // Inside UserProfile component, after user details:
 interface UserProfileProps {
   user: Buyer;
+  transactions: any[]; // You can define a more specific type if needed
 }
-const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user, transactions }) => {
   const router = useRouter();
   const { userId, setUserId } = useUser();
 
@@ -77,7 +78,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         <Heading size="md" mb={4}>
           Purchased Items:
         </Heading>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        {/* <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           {mockItems.map((item) => (
             <Box key={item.id} p={4} borderWidth="1px" borderRadius="md">
               <Image src={FOOD_ITEM_IMAGE_URL} alt={item.name} />
@@ -85,16 +86,52 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
               <Text>{item.price}</Text>
             </Box>
           ))}
-        </Grid>
+        </Grid> */}
+        {transactions &&
+          transactions.map((transaction) => (
+            <Box
+              key={transaction.transactionId}
+              p={4}
+              borderWidth="1px"
+              borderRadius="md"
+              mb={4}
+            >
+              {transaction.items.map((item) => (
+                <Flex
+                  key={item.productId}
+                  direction="column"
+                  alignItems="center"
+                  mb={4}
+                >
+                  <Image src={FOOD_ITEM_IMAGE_URL} alt={item.itemName} />
+                  <Text mt={2}>{item.itemName}</Text>
+                  <Text>Quantity: {item.quantity}</Text>
+                  <Text>Price: ${item.price}</Text>
+                </Flex>
+              ))}
+              {transaction.items[0].groupbuyId && (
+                <Text fontWeight="bold" color="red.500">
+                  Groupbuy Transaction
+                </Text>
+              )}
+            </Box>
+          ))}
       </Box>
     </Layout>
   );
 };
 
-export async function getServerSideProps(context: { params: { userId: any } }) {
+export async function getServerSideProps(context: { params: { userId: any, transactions: any[] } }) {
   const { userId } = context.params;
-  const res = await fetch(`http://localhost:3000/api/buyers/${userId}`);
-  const user = await res.json();
+  // const res = await fetch(`http://localhost:3000/api/buyers/${userId}`);
+  const res = await fetch(
+    `http://localhost:3000/api/buyers/${userId}?withItems=true`
+  );
+  const data = await res.json();
+  const user = data.buyer;
+  const transactions = data.transactions;
+
+  // const user = await res.json();
   console.log("user", user);
   // Check if user is undefined
   if (!user || user.error) {
@@ -109,6 +146,7 @@ export async function getServerSideProps(context: { params: { userId: any } }) {
   return {
     props: {
       user,
+      transactions
     },
   };
 }
