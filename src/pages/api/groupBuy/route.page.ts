@@ -12,7 +12,7 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const { buyerId, productId, status } = query;
+        const { buyerId, productId, status, longitude, latitude } = query;
 
         let allGroupBuysSnapshot = await groupBuysCollection.get();
         let results: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
@@ -45,6 +45,16 @@ export default async function handler(
           results = results.filter((doc) => doc.data().status === status);
         }
 
+        // Filter by location
+        if (longitude && latitude) {
+          results = results.filter(
+            (doc) =>
+              doc.data().location &&
+              doc.data().location.longitude === longitude &&
+              doc.data().location.latitude === latitude
+          );
+        }
+
         const groupBuys = results.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -59,11 +69,23 @@ export default async function handler(
 
     case "POST":
       try {
-        const { shopId } = req.body;
+        const { shopId, location } = req.body;
+
+        // Validate location
+        if (
+          !location ||
+          typeof location.longitude !== "string" ||
+          typeof location.latitude !== "string"
+        ) {
+          res.status(400).json({ error: "Invalid location format" });
+          return;
+        }
+
         const groupBuyRef = await groupBuysCollection.add({
           shopId,
           selections: {},
           status: "pending",
+          location,
         });
 
         res.status(201).json({
@@ -71,6 +93,7 @@ export default async function handler(
           shopId,
           selections: {},
           status: "pending",
+          location,
         });
       } catch (error: any) {
         res.status(500).json({ error: error.toString() });

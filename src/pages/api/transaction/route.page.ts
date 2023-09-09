@@ -14,7 +14,7 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const { buyerId, productId } = query;
+        const { buyerId, productId, groupBuyId } = query;
 
         let results: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
           [];
@@ -40,6 +40,23 @@ export default async function handler(
             results = results.filter((doc) => productIds.has(doc.id));
           } else {
             results = productSnapshot.docs;
+          }
+        }
+
+        // Query based on groupBuyId
+        if (groupBuyId) {
+          const groupBuySnapshot = await transactionsCollection
+            .where("groupBuyId", "==", groupBuyId)
+            .get();
+
+          // If results already have data from previous filters, merge with the new filter
+          if (results.length > 0) {
+            const groupBuyIds = new Set(
+              groupBuySnapshot.docs.map((doc) => doc.id)
+            );
+            results = results.filter((doc) => groupBuyIds.has(doc.id));
+          } else {
+            results = groupBuySnapshot.docs;
           }
         }
 
