@@ -108,12 +108,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
     console.log("group buy popup clicked", productId);
     // todo: POST a new groupbuy
     // store the groupbuyId from the response
-    const groupbuyId = "123";
+    const groupbuyId = "vkD2H8FIqG7kDbnTCw4e";
     // then redirect to the groupbuy page
     router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
   };
   const handleFeaturedItemClick = () => {
-    
     router.push(`/product/${productId}`);
   };
 

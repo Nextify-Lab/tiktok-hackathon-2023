@@ -13,9 +13,13 @@ import { FaCheckCircle, FaFrown } from "react-icons/fa";
 
 interface PaymentResultProps {
   status: "success" | "failed";
+  groupbuyId: string | null;
 }
 
-const PaymentResult: React.FC<PaymentResultProps> = ({ status }) => {
+const PaymentResult: React.FC<PaymentResultProps> = ({
+  status,
+  groupbuyId,
+}) => {
   const router = useRouter();
 
   const isSuccessful = status === "success";
@@ -31,6 +35,9 @@ const PaymentResult: React.FC<PaymentResultProps> = ({ status }) => {
         />
         <Heading>
           {isSuccessful ? "Payment Successful!" : `Payment Failed ${status}`}
+        </Heading>
+        <Heading size="md">
+          {groupbuyId && `Groupbuy Id: ${groupbuyId}`}
         </Heading>
       </VStack>
 
@@ -54,11 +61,14 @@ const PaymentResult: React.FC<PaymentResultProps> = ({ status }) => {
   );
 };
 
-export async function getServerSideProps(context: { query: { status: any } }) {
-  const { status } = context.query;
+export async function getServerSideProps(context: {
+  query: { status: string; groupbuyId?: string };
+}) {
+  const { status, groupbuyId } = context.query;
   return {
     props: {
       status,
+      groupbuyId: groupbuyId || null,
     },
   };
 }

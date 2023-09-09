@@ -38,9 +38,9 @@ interface ViewShopProps {
 
 const ViewShop: React.FC<ViewShopProps> = ({ shopId, groupbuyId }) => {
   const { shop, loading } = useShop(shopId, true); // Use the custom hook
-  console.log(shop);
+  // console.log(shop);
   const products = shop?.products;
-  console.log(products);
+  // console.log(products);
   const [searchText, setSearchText] = useState("");
   const router = useRouter();
 
