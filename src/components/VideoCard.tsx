@@ -11,7 +11,18 @@ import styles from "./VideoCard.module.css";
 import GroupBuyPopup from "./ShopFlow/GroupBuyPopup";
 import ViewItem from "./ShopFlow/ViewProduct";
 import { useRouter } from "next/router";
-import { Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Skeleton,
+} from "@chakra-ui/react";
 
 interface VideoCardProps {
   url: string;
@@ -26,6 +37,7 @@ interface VideoCardProps {
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
   productId: string;
+  geolocation: { latitude: string; longitude: string };
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -54,10 +66,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
   setVideoRef,
   autoplay,
   productId,
+  geolocation,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const router = useRouter();
+
+  const [showPopup, setShowPopup] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
@@ -132,8 +147,72 @@ const VideoCard: React.FC<VideoCardProps> = ({
       );
     }
   };
+
+  const ConfirmPopup = ({ isOpen, onCancel, onConfirm }: any) => (
+    <Modal isOpen={isOpen} onClose={onCancel} isCentered>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Confirm Group Buy</ModalHeader>
+        <ModalCloseButton
+          onClick={() => {
+            setShowPopup(false);
+            router.push(`/`);
+          }}
+        />
+        <ModalBody>Do you want to start a groupbuy?</ModalBody>
+        <ModalFooter>
+          <Button
+            mr={3}
+            backgroundColor="black"
+            textColor="white"
+            onClick={onCancel}
+          >
+            No
+          </Button>
+          <Button
+            backgroundColor="#fe2c55"
+            textColor="white"
+            onClick={onConfirm}
+          >
+            Yes
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+
   const handleFeaturedItemClick = () => {
+    setShowPopup(true);
+  };
+
+  const handleCancel = () => {
+    setShowPopup(false);
     router.push(`/product/${productId}`);
+  };
+
+  const handleConfirm = async () => {
+    setShowPopup(false);
+    // Make the POST request
+    try {
+      const res = await fetch("/api/mock", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Add any required body data for the POST request
+        body: JSON.stringify({ productId }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const groupbuyId = data.groupbuyId; // Assuming your response returns a groupbuyId
+        router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
+      } else {
+        // Handle any error response from your server
+        console.error("Failed to create groupbuy");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   useEffect(() => {
@@ -192,6 +271,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
           />
         </div>
       </div>
+      <ConfirmPopup
+        isOpen={showPopup}
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 };
