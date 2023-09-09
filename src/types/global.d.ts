@@ -111,3 +111,18 @@ interface Video {
   shares: number;
   productId: string;
 }
+
+interface SelectionDetail {
+  [key: string]: number; // Represents the nested object within the selections
+}
+
+interface Selections {
+  [key: string]: SelectionDetail; // Represents the selections object
+}
+
+interface GroupBuyFE {
+  id: string;
+  shopId: string;
+  selections: Selections;
+  status: string;
+}

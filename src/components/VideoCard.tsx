@@ -39,6 +39,7 @@ export const FOOD_ITEM_DESC = `
 3. Sour Vege Meat 酸菜肉丝 - Round Packaging
 4. Stir Fried Meat With Fungus 鱼香肉丝 - Square Packaging
 `;
+export const DELIVERY_FEE = 3;
 
 const VideoCard: React.FC<VideoCardProps> = ({
   url,
@@ -60,7 +61,10 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
-  const [groupbuy, setGroupbuy] = useState<GroupBuy | undefined>(undefined);
+  const [groupbuys, setGroupbuys] = useState<
+    GroupBuyFE[] | GroupBuy[] | undefined
+  >(undefined);
+  const [numberOfPeople, setNumberOfPeople] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -88,8 +92,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
       try {
         setLoading(true);
         const res = await fetch(`/api/groupBuy/route?productId=${productId}`);
-        const data = await res.json();
-        setGroupbuy(data);
+        const data: GroupBuyFE[] = await res.json();
+        setGroupbuys(data);
+        console.log(data);
+
+        // change index of 0
+        setNumberOfPeople(Object.keys(data[0].selections).length);
+
         setLoading(false);
         console.log("[productId].page.tsx set groupbuy as ", data);
       } catch (error) {
@@ -100,7 +109,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     fetchGroupbuy();
 
     return () => {
-      setGroupbuy(undefined);
+      setGroupbuys(undefined);
     };
   }, [productId]);
 
@@ -108,9 +117,20 @@ const VideoCard: React.FC<VideoCardProps> = ({
     console.log("group buy popup clicked", productId);
     // todo: POST a new groupbuy
     // store the groupbuyId from the response
-    const groupbuyId = "vkD2H8FIqG7kDbnTCw4e";
-    // then redirect to the groupbuy page
-    router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
+    if (
+      Array.isArray(groupbuys) &&
+      groupbuys.length > 0 &&
+      typeof groupbuys[0].id !== "undefined"
+    ) {
+      const groupbuyId = groupbuys[0].id;
+      // Use groupbuyId for your logic here...
+      // then redirect to the groupbuy page
+      router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
+    } else {
+      console.error(
+        "groupbuys is not valid or doesn't have any items with an id."
+      );
+    }
   };
   const handleFeaturedItemClick = () => {
     router.push(`/product/${productId}`);
@@ -146,8 +166,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
         src={url}
       ></video>
       <GroupBuyPopup
-        moneySaved={0.4}
-        nearbyNum={8}
+        moneySaved={DELIVERY_FEE - DELIVERY_FEE / numberOfPeople}
+        nearbyNum={numberOfPeople}
         onClick={() => handleGroupBuyPopupClick()}
       />
       <div className={styles["bottom-controls"]}>
