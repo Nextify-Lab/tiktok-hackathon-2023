@@ -90,12 +90,22 @@ class GroupBuy {
   shopId: string;
   buyerIds: string[];
   TransactionIds: string[];
+  location: {
+    longitude: string;
+    latitude: string;
+  };
 
-  constructor(id: string, buyerIds: string[], shopId: string) {
+  constructor(
+    id: string,
+    buyerIds: string[],
+    shopId: string,
+    location: { longitude: string; latitude: string }
+  ) {
     this.id = id;
-    this.buyers = buyers;
+    this.buyers = buyerIds;
     this.shop = shop;
     this.TransactionIds = [];
+    this.location = location;
   }
 }
 
