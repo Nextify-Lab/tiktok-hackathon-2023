@@ -138,10 +138,12 @@ const Payment = () => {
       <OrderSummary
         productPrice={product?.price!}
         shippingPrice={shippingPrice}
+        // shippingPrice={0.75}
       />
       <PaymentMethod />
       <FooterPrice
         productPrice={product?.price! + shippingPrice}
+        // productPrice={product?.price! + 0.75}
         onPayment={handlePayment}
       />
     </SkeletonBox>
