@@ -4,14 +4,14 @@ export const videoUrls: Video[] = [
     url: "/videos/video1.mp4",
     profilePic:
       "https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80",
-    username: "csjackie",
-    description: "Lol nvm #compsci #chatgpt #ai #openai #techtok",
-    song: "Original sound - Famed Flames",
-    likes: 430,
-    comments: 13,
-    saves: 23,
-    shares: 1,
-    productId: "ylVMYgHF4xcMpZaIX6dz"
+    username: "ramyun_girl",
+    description: "Ramyun cooking tutorial for you, the ASIAN WAY",
+    song: "Original sound",
+    likes: 1430,
+    comments: 130,
+    saves: 230,
+    shares: 100,
+    productId: "ylVMYgHF4xcMpZaIX6dz",
   },
   // {
   //   url: "/videos/video2.mp4",
