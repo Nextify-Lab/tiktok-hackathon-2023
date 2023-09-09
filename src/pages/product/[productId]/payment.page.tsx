@@ -140,7 +140,10 @@ const Payment = () => {
         shippingPrice={shippingPrice}
       />
       <PaymentMethod />
-      <FooterPrice productPrice={product?.price!} onPayment={handlePayment} />
+      <FooterPrice
+        productPrice={product?.price! + shippingPrice}
+        onPayment={handlePayment}
+      />
     </SkeletonBox>
   );
 };

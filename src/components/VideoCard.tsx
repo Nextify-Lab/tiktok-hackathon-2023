@@ -38,7 +38,7 @@ interface VideoCardProps {
   setVideoRef: (video: HTMLVideoElement | null) => void;
   autoplay: boolean;
   productId: string;
-  geolocation: { latitude: number | string; longitude: number | string } | null;
+  geolocation: { latitude: number; longitude: number } | null;
 }
 
 export const FOOD_ITEM_IMAGE_URL =
@@ -78,9 +78,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
-  const [groupbuys, setGroupbuys] = useState<
-    GroupBuyFE[] | GroupBuy[] | undefined
-  >(undefined);
+  const [groupbuys, setGroupbuys] = useState<GroupBuyFE[] | undefined>(
+    undefined
+  );
   const [numberOfPeople, setNumberOfPeople] = useState(0);
 
   useEffect(() => {
@@ -130,23 +130,84 @@ const VideoCard: React.FC<VideoCardProps> = ({
     };
   }, [productId]);
 
+  const calculateDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  };
+
   const handleGroupBuyPopupClick = () => {
     console.log("group buy popup clicked", productId);
-    // todo: POST a new groupbuy
-    // store the groupbuyId from the response
-    if (
-      Array.isArray(groupbuys) &&
-      groupbuys.length > 0 &&
-      typeof groupbuys[0].id !== "undefined"
-    ) {
-      const groupbuyId = groupbuys[0].id;
-      // Use groupbuyId for your logic here...
-      // then redirect to the groupbuy page
-      router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
+
+    // If groupbuys is undefined or empty, just return
+    if (!groupbuys || groupbuys.length === 0) {
+      console.error("No group buys available.");
+      return;
+    }
+
+    let closestGroupBuy;
+    let minDistance = Infinity;
+
+    for (const groupBuy of groupbuys) {
+      if (groupBuy.location && geolocation) {
+        const distance = calculateDistance(
+          groupBuy.location.latitude,
+          groupBuy.location.longitude,
+          geolocation.latitude,
+          geolocation.longitude
+        );
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestGroupBuy = groupBuy;
+        }
+      }
+    }
+
+    // If no group buy items have a location, use the first item in the list
+    if (!closestGroupBuy) {
+      closestGroupBuy = groupbuys[0];
+    }
+
+    const numberOfPeopleInClosestGroup = Object.keys(
+      closestGroupBuy.selections
+    ).length;
+
+    if (numberOfPeopleInClosestGroup >= 10) {
+      // Shut off the group buy
+      // Fetch to api/groupBuy/<groupBuyId>
+      const groupBuyId = closestGroupBuy.id;
+      fetch(`/api/groupBuy/${groupBuyId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "completed" }), // Assuming you want to update the status to 'completed'
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Group buy shut off:", data);
+        })
+        .catch((error) => {
+          console.error("Failed to shut off group buy:", error);
+        });
     } else {
-      console.error(
-        "groupbuys is not valid or doesn't have any items with an id."
-      );
+      const groupbuyId = closestGroupBuy.id;
+      router.push(`/product/${productId}?groupbuyId=${groupbuyId}`);
     }
   };
 
@@ -154,7 +215,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     <Modal isOpen={isOpen} onClose={onCancel} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Confirm Group Buy</ModalHeader>
+        <ModalHeader>Start Group Buy</ModalHeader>
         <ModalCloseButton
           onClick={() => {
             setShowPopup(false);

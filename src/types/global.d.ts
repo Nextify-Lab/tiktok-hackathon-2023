@@ -135,4 +135,5 @@ interface GroupBuyFE {
   shopId: string;
   selections: Selections;
   status: string;
+  location: { latitude: number; longitude: number };
 }
