@@ -50,7 +50,7 @@ export default async function handler(
 
     case "POST":
       try {
-        const newBuyer: Buyer = req.body; // Assuming req.body contains the Buyer object
+        const newBuyer: Buyer = req.body;
         // Check if the username already exists
         const usernameExistsQuery = await buyersCollection
           .where("username", "==", newBuyer.username)
@@ -63,7 +63,7 @@ export default async function handler(
 
         // If the username is unique, add the newBuyer to the database
         const docRef = await buyersCollection.add(newBuyer);
-        const createdBuyer = { ...newBuyer, id: docRef.id }; // Set id separately
+        const createdBuyer = { ...newBuyer, id: docRef.id };
         res.status(201).json(createdBuyer);
       } catch (error: any) {
         res.status(500).json({ error: error.toString() });

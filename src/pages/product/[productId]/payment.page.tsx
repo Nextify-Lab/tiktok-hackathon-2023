@@ -5,13 +5,14 @@ import OrderSummary from "@/components/ShopFlow/OrderSummary/OrderSummary";
 import PaymentMethod from "@/components/ShopFlow/OrderSummary/PaymentMethod";
 import ProductDetails from "@/components/ShopFlow/OrderSummary/ProductDetails";
 import SkeletonBox from "@/components/SkeletonBox";
+import { useUser } from "@/components/userContext";
 import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const Payment = () => {
   const router = useRouter();
-  const { productId } = router.query;
+  const { productId, groupbuyId } = router.query;
 
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | undefined>(undefined);
@@ -21,6 +22,8 @@ const Payment = () => {
 
   const shopId = product?.shopId;
   const [shop, setShop] = useState<Shop | undefined>(undefined);
+
+  const { userId, setUserId } = useUser();
 
   const fetchProduct = async () => {
     try {
@@ -76,8 +79,35 @@ const Payment = () => {
     return <Spinner />;
   }
 
-  function handlePayment(): void {
-    throw new Error("Function not implemented.");
+  async function handlePayment() {
+    if (userId === null) {
+      router.push("/login");
+      return;
+    }
+    if (typeof productId !== "string") {
+      console.error("productId is not a string");
+      return;
+    }
+    if (typeof groupbuyId !== "string" && groupbuyId !== undefined) {
+      console.error("groupbuyId is not a string");
+      return;
+    }
+    console.log("groupbuyId", groupbuyId);
+    const input: TransactionInput = {
+      buyerId: userId,
+      purchases: { [productId]: stock },
+      groupbuyId: groupbuyId,
+    };
+
+    try {
+      const result = await createTransaction(input);
+      console.log("Transaction created", result);
+
+      router.push(`/product/${productId}/paymentResult?status=success`);
+    } catch (error) {
+      console.error("Error in [productId].page.tsx", error);
+      router.push(`/product/${productId}/paymentResult?status=${error}`);
+    }
   }
 
   return (
@@ -104,3 +134,41 @@ const Payment = () => {
 };
 
 export default Payment;
+
+interface TransactionInput {
+  buyerId: string;
+  purchases: Record<string, number>;
+  groupbuyId?: string;
+}
+
+interface TransactionResponse {
+  id: string;
+  buyerId: string;
+  purchases: Record<string, number>;
+  groupbuyId?: string;
+}
+
+const createTransaction = async (
+  input: TransactionInput
+): Promise<TransactionResponse> => {
+  try {
+    console.log("Creating transaction", input);
+    const response = await fetch("/api/transaction/route", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create transaction");
+    }
+
+    const data: TransactionResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error creating transaction:", error);
+    throw error;
+  }
+};

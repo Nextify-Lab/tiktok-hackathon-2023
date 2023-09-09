@@ -2,35 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../../firebase/admin";
 
 const productsCollection = db.collection("products");
-const itemsCollection = db.collection("items");
-
-// Function to create multiple items with optional buyerID and return their doc IDs
-async function createItems(
-  shopId: string,
-  productId: string,
-  stock: number,
-  price: number,
-  description: string,
-  productName: string
-): Promise<string[]> {
-  const itemSerialNumbers: string[] = [];
-
-  for (let i = 0; i < stock; i++) {
-    const itemRef = await itemsCollection.add({
-      shopId,
-      productId, // Include productId
-      price,
-      description,
-      buyerID: null,
-      deleted: false,
-      productName,
-    });
-
-    itemSerialNumbers.push(itemRef.id);
-  }
-
-  return itemSerialNumbers;
-}
+const shopsCollection = db.collection("shops");
 
 export default async function handler(
   req: NextApiRequest,
@@ -62,10 +34,20 @@ export default async function handler(
         res.status(200).json(productData);
         break;
 
-      case "PATCH":
+      case "PUT":
         try {
-          // Allow updating only specific attributes (shopId, price, description, productName)
+          // Validate that the shopId is a valid document ID in the shopsCollection
           const { shopId, price, description, productName } = body;
+
+          const shopDoc = await shopsCollection.doc(shopId).get();
+          const shopData = shopDoc.data();
+
+          if (!shopData || shopData.deleted) {
+            res.status(400).json({ error: `Invalid shopId parameter` });
+            return;
+          }
+
+          // Allow updating only specific attributes (shopId, price, description, productName)
           const updatedData: Partial<typeof body> = {};
 
           if (shopId) {
@@ -84,29 +66,15 @@ export default async function handler(
           // Update the product information
           await productsCollection.doc(id).update(updatedData);
 
-          // Update the items in the itemsCollection where buyerID is null
-          const itemSerialNumbers = productData.itemSerialNumbers || [];
-
-          for (const itemSerialNumber of itemSerialNumbers) {
-            const itemDoc = await itemsCollection.doc(itemSerialNumber).get();
-            const itemData = itemDoc.data();
-
-            if (itemData && itemData.buyerID === null) {
-              await itemsCollection.doc(itemSerialNumber).update(updatedData);
-            }
-          }
-
-          res
-            .status(200)
-            .json({
-              message: "Product and related items updated successfully",
-            });
+          res.status(200).json({
+            message: "Product and related items updated successfully",
+          });
         } catch (error: any) {
           res.status(500).json({ error: error.toString() });
         }
         break;
 
-      case "PUT":
+      case "PATCH":
         try {
           // Check if the product stock is being updated
           const { addedstock } = body;
@@ -118,24 +86,8 @@ export default async function handler(
           // Calculate the new stock value
           const newStock = (productData.stock || 0) + addedstock;
 
-          // Create new items and get their doc IDs, passing the productId
-          const itemSerialNumbers = await createItems(
-            productData.shopId,
-            id, // Pass the product ID
-            addedstock,
-            productData.price, // Include price from productData
-            productData.description, // Include description from productData
-            productData.productName // Include productName from productData
-          );
-
-          // Update the product with the new stock value and itemSerialNumbers
-          await productsCollection.doc(id).update({
-            stock: newStock, // Update stock
-            itemSerialNumbers: [
-              ...(productData.itemSerialNumbers || []),
-              ...itemSerialNumbers,
-            ],
-          });
+          // Update the product with the new stock value
+          await productsCollection.doc(id).update({ stock: newStock });
 
           res.status(200).json({ message: "Stock added successfully" });
         } catch (error: any) {
@@ -147,19 +99,6 @@ export default async function handler(
         try {
           // Change stock to 0
           await productsCollection.doc(id).update({ stock: 0 });
-
-          // Turn deleted to true for items with null buyerID
-          const itemSerialNumbers = productData.itemSerialNumbers || [];
-          for (const itemSerialNumber of itemSerialNumbers) {
-            const itemDoc = await itemsCollection.doc(itemSerialNumber).get();
-            const itemData = itemDoc.data();
-
-            if (itemData && itemData.buyerID === null) {
-              await itemsCollection.doc(itemSerialNumber).update({
-                deleted: true,
-              });
-            }
-          }
 
           res.status(204).end();
         } catch (error: any) {

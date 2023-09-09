@@ -10,6 +10,7 @@ import {
   Grid,
   Avatar,
   Flex,
+  Button,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -25,6 +26,7 @@ interface UserProfileProps {
 }
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const router = useRouter();
+  const { userId, setUserId } = useUser();
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -39,6 +41,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
           <Text fontSize="xl" fontWeight="bold">
             {user.username}
           </Text>
+          <Button
+            onClick={() => {
+              router.push(`/login`);
+              setUserId(null);
+            }}
+          >
+            Log out
+          </Button>
           <Flex mt={2}>
             <Box mx={2}>
               <Text fontWeight="bold">25</Text>
