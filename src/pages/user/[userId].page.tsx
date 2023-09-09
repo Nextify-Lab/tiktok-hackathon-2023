@@ -96,7 +96,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, transactions }) => {
               borderRadius="md"
               mb={4}
             >
-              {transaction.items.map((item) => (
+              {transaction.items.map((item: any) => (
                 <Flex
                   key={item.productId}
                   direction="column"
@@ -121,12 +121,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, transactions }) => {
   );
 };
 
-export async function getServerSideProps(context: { params: { userId: any, transactions: any[] } }) {
+export async function getServerSideProps(context: {
+  params: { userId: any; transactions: any[] };
+}) {
   const { userId } = context.params;
-  // const res = await fetch(`http://localhost:3000/api/buyers/${userId}`);
-  const res = await fetch(
-    `http://localhost:3000/api/buyers/${userId}?withItems=true`
-  );
+  // const res = await fetch(`/api/buyers/${userId}`);
+  const res = await fetch(`/api/buyers/${userId}?withItems=true`);
   const data = await res.json();
   const user = data.buyer;
   const transactions = data.transactions;
@@ -146,7 +146,7 @@ export async function getServerSideProps(context: { params: { userId: any, trans
   return {
     props: {
       user,
-      transactions
+      transactions,
     },
   };
 }

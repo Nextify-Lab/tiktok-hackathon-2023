@@ -18,7 +18,7 @@ export default function ForYouPage() {
   useEffect(() => {
     setVideos(videoUrls);
   }, []);
-  
+
   useEffect(() => {
     // Check if the Geolocation API is supported
     if ("geolocation" in navigator) {
@@ -77,7 +77,6 @@ export default function ForYouPage() {
   const handleVideoRef = (index: number) => (ref: HTMLVideoElement | null) => {
     videoRefs.current[index] = ref;
   };
-
   return (
     <Layout>
       {/* Here we map over the videos array and create VideoCard components */}

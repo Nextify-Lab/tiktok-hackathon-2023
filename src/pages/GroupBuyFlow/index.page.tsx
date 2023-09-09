@@ -1,19 +1,24 @@
-// pages/SomePage.tsx
-
 import BottomSheetGroupBuyModifiedChild from "@/components/GroupBuyFlow/BottomSheetGroupBuyModifiedChild";
 import QRCodeButton from "@/components/GroupBuyFlow/QRCodeButton";
 import ShareButton from "@/components/GroupBuyFlow/ShareButton";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const SomePage: React.FC = () => {
   const [sheetTitle, setSheetTitle] = useState("");
   const [sheetDesc, setSheetDesc] = useState<"qr" | "share">("qr");
   const [isOpen, setIsOpen] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState<string>(""); // initialize as empty string
 
   const router = useRouter();
-  const currentUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`;
+
+  useEffect(() => {
+    // This code will run only on the client side after the initial render
+    setCurrentUrl(
+      `${window.location.protocol}//${window.location.host}${router.asPath}`
+    );
+  }, [router.asPath]); // Recompute currentUrl whenever router.asPath changes
 
   const clickQRCode = () => {
     setIsOpen(true);
