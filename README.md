@@ -1,3 +1,42 @@
+# ThriftTogether: Groupbuy with friends on TikTok Shop
+
+![Screenshot 1](public/showcaseImages/Screenshot%202023-09-09%20145236.png)
+![Screenshot 2](public/showcaseImages/Screenshot%202023-09-09%20145317.png)
+![Screenshot 3](public/showcaseImages/Screenshot%202023-09-09%20145335.png)
+![Screenshot 4](public/showcaseImages/Screenshot%202023-09-09%20145341.png)
+![Screenshot 5](public/showcaseImages/Screenshot%202023-09-09%20145347.png)
+![Screenshot 6](public/showcaseImages/Screenshot%202023-09-09%20145353.png)
+![Screenshot 7](public/showcaseImages/Screenshot%202023-09-09%20145400.png)
+![Screenshot 8](public/showcaseImages/Screenshot%202023-09-09%20145406.png)
+
+## Inspiration
+
+Ever found yourself drooling over a late-night food TikTok, wishing you could instantly share a meal with friends beside you? The craving is real, but the process? Cumbersome. Between coordinating orders, calculating shared costs, and navigating multiple payment methods, the journey from seeing that mouth-watering dish to actually enjoying it with friends is often longer and more complicated than it should be.
+
+## What it does
+
+ThriftTogether is here to change that. It streamlines the entire process, making it easy to initiate group buys directly from TikTok. See a dish you like? Share it with friends using a QR code or a direct link. The platform automatically clusters users based on location, ensuring everyone gets their food hot and fresh. No more manual calculations or separate payments; ThriftTogether handles it all.
+
+## How we built it
+
+Our tech stack includes NextJS for the frontend and Firebase for the backend, ensuring a responsive and scalable application. We've also designed RESTful APIs, allowing ThriftTogether to be easily integrated as a microservice into other platforms or e-commerce systems.
+
+## Challenges we ran into
+
+One significant challenge was determining the exact moment a user becomes part of a group buy. Should it be when they click the link or after they've completed the payment? After much deliberation, we chose the latter. This ensures that only genuinely interested parties are counted, leading to a smoother user experience and more successful group buys.
+
+## Accomplishments that we're proud of
+
+We're incredibly proud of bringing ThriftTogether to life in just two days. This platform not only simplifies group buying but also enhances the social shopping experience on TikTok, making it more interactive and user-friendly.
+
+## What we learned
+
+This journey taught us the intricacies of implementing RESTful APIs, the nuances of web development, and the importance of user experience in e-commerce solutions. Every challenge was a learning opportunity, and we've come out richer in knowledge and experience.
+
+## What's next for ThriftTogether: Groupbuy with friends on TikTok Shop
+
+Given the potential of ThriftTogether, we're considering launching it as a standalone app. The future looks promising, and we're excited to see where ThriftTogether goes next!
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
