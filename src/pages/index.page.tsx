@@ -10,9 +10,31 @@ const inter = Inter({ subsets: ["latin"] });
 export default function ForYouPage() {
   const [videos, setVideos] = useState<Video[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   useEffect(() => {
     setVideos(videoUrls);
+  }, []);
+  
+  useEffect(() => {
+    // Check if the Geolocation API is supported
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setUserLocation({ latitude, longitude });
+        },
+        function (error) {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   }, []);
 
   useEffect(() => {

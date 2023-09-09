@@ -18,7 +18,7 @@ const Payment = () => {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [stock, setStock] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(undefined);
-  const shippingPrice = 1;
+  const shippingPrice = 3;
 
   const shopId = product?.shopId;
   const [shop, setShop] = useState<Shop | undefined>(undefined);
@@ -45,7 +45,6 @@ const Payment = () => {
       const res = await fetch(`/api/shop/${shopId}`);
       const data = await res.json();
       setShop(data);
-      console.log(shop);
       setLoading(false);
 
       if (data.error) {
@@ -93,17 +92,30 @@ const Payment = () => {
       return;
     }
     console.log("groupbuyId", groupbuyId);
-    const input: TransactionInput = {
-      buyerId: userId,
-      purchases: { [productId]: stock },
-      groupbuyId: groupbuyId,
-    };
 
     try {
-      const result = await createTransaction(input);
-      console.log("Transaction created", result);
-
-      router.push(`/product/${productId}/paymentResult?status=success`);
+      if (groupbuyId === undefined) {
+        const input: TransactionInput = {
+          buyerId: userId,
+          purchases: {
+            [productId]: stock,
+          },
+        };
+        const individualTransactionResult = createTransaction(input);
+        console.log("Transaction created", individualTransactionResult);
+        router.push(`/product/${productId}/paymentResult?status=success`);
+      } else {
+        const input: GroupBuyUpdateInput = {
+          buyerId: userId,
+          productId: productId,
+          quantity: stock,
+        };
+        const result = await updateGroupbuy(groupbuyId, input);
+        console.log("Groupbuy updated", result);
+        router.push(
+          `/product/${productId}/paymentResult?status=success&groupbuyId=${groupbuyId}`
+        );
+      }
     } catch (error) {
       console.error("Error in [productId].page.tsx", error);
       router.push(`/product/${productId}/paymentResult?status=${error}`);
@@ -134,6 +146,41 @@ const Payment = () => {
 };
 
 export default Payment;
+interface GroupBuyUpdateInput {
+  buyerId: string;
+  productId: string;
+  quantity: number;
+}
+
+interface GroupBuyUpdateResponse {
+  message: string;
+}
+
+const updateGroupbuy = async (
+  groupbuyId: string,
+  input: GroupBuyUpdateInput
+): Promise<GroupBuyUpdateResponse> => {
+  try {
+    console.log("Creating groupbuy", input, groupbuyId);
+    const response = await fetch(`/api/groupBuy/${groupbuyId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update group buy selection");
+    }
+
+    const data: GroupBuyUpdateResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error creating group buy:", error);
+    throw error;
+  }
+};
 
 interface TransactionInput {
   buyerId: string;
