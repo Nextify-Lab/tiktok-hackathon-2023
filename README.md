@@ -5,6 +5,18 @@
 ![Screenshot 3](public/showcaseImages/Screenshot%202023-09-09%20145335.png)
 ![Screenshot 4](public/showcaseImages/Screenshot%202023-09-09%20145341.png)
 
+## Microservice Architecture
+
+![Microservice Architecture](public\showcaseImages\Tiktokhackathon.jpg)
+
+## Sequence Diagram
+
+![Sequence Diagram](public\showcaseImages\sequence)
+
+## Entity Relationship Diagram
+
+![Entity Relationship Diagram](public\showcaseImages\entity.png)
+
 ## Inspiration
 
 Ever found yourself drooling over a late-night food TikTok, wishing you could instantly share a meal with friends beside you? The craving is real, but the process? Cumbersome. Between coordinating orders, calculating shared costs, and navigating multiple payment methods, the journey from seeing that mouth-watering dish to actually enjoying it with friends is often longer and more complicated than it should be.
