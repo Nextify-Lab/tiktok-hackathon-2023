@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Flex, Box, Image, Button, Text } from "@chakra-ui/react";
+import { FOOD_ITEM_IMAGE_URL } from "@/components/VideoCard";
 
 interface ProductDetailsProps {
   stock: number;
@@ -32,7 +33,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       <Flex mb={4}>
         {/* Left column - item image */}
         <Image
-          src="https://via.placeholder.com/100"
+          src={FOOD_ITEM_IMAGE_URL}
           alt="Item placeholder"
           boxSize="100px"
           mr={4}
